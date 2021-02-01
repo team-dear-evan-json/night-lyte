@@ -1,6 +1,21 @@
 import React from 'react'
 import {MapContainer, TileLayer, Marker, Popup} from 'react-leaflet'
 import {businesses} from '../../dummyData/businesses'
+import L from 'leaflet'
+
+// const marker = `../images/marker.png`
+
+const businessIcon = new L.Icon({
+  iconUrl: require(`../images/marker.png`),
+  iconRetinaUrl: require(`../images/marker.png`),
+  iconAnchor: null,
+  popupAnchor: null,
+  shadowUrl: null,
+  shadowSize: null,
+  shadowAnchor: null,
+  iconSize: new L.Point(60, 75),
+  className: 'leaflet-div-icon'
+})
 
 class MainMap extends React.Component {
   constructor() {
@@ -21,7 +36,7 @@ class MainMap extends React.Component {
           />
           {businesses.map(business => {
             return (
-              <Marker position={business.location}>
+              <Marker position={business.location} icon={businessIcon}>
                 <Popup>{business.name}</Popup>
               </Marker>
             )
