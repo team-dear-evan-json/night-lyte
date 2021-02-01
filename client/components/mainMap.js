@@ -2,20 +2,21 @@ import React from 'react'
 import {MapContainer, TileLayer, Marker, Popup} from 'react-leaflet'
 import {businesses} from '../../dummyData/businesses'
 import L from 'leaflet'
+const path = require('path')
 
 // const marker = `../images/marker.png`
-
-const businessIcon = new L.Icon({
-  iconUrl: require(`../images/marker.png`),
-  iconRetinaUrl: require(`../images/marker.png`),
-  iconAnchor: null,
-  popupAnchor: null,
-  shadowUrl: null,
-  shadowSize: null,
-  shadowAnchor: null,
-  iconSize: new L.Point(60, 75),
-  className: 'leaflet-div-icon'
-})
+//path.join(__dirname, '..', 'public')
+// const businessIcon = new L.Icon({
+//   iconUrl: require(`../../public/images/marker.png`),
+//   iconRetinaUrl: require(`../../public/images/marker.png`),
+//   iconAnchor: null,
+//   popupAnchor: null,
+//   shadowUrl: null,
+//   shadowSize: null,
+//   shadowAnchor: null,
+//   iconSize: new L.Point(60, 75),
+//   className: 'leaflet-div-icon',
+// })
 
 class MainMap extends React.Component {
   constructor() {
