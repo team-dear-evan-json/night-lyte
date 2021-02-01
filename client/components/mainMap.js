@@ -1,6 +1,5 @@
 import React from 'react'
 import {MapContainer, TileLayer, Marker, Popup} from 'react-leaflet'
-import {businesses} from '../../dummyData/businesses'
 import axios from 'axios'
 
 class MainMap extends React.Component {
@@ -18,10 +17,10 @@ class MainMap extends React.Component {
     this.getBusinessesFromApi('Brooklyn, NY')
   }
 
-  getBusinessesFromApi = locationSearched => {
+  getBusinessesFromApi = async locationSearched => {
     this.setState({loading: true})
 
-    axios
+    await axios
       .get(
         `${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search?location=${locationSearched}`,
         {
