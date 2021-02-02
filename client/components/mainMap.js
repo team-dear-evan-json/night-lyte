@@ -3,10 +3,10 @@ import {MapContainer, TileLayer, Marker, Popup} from 'react-leaflet'
 import {businesses} from '../../dummyData/businesses'
 
 class MainMap extends React.Component {
-  constructor() {
-    super()
-    this.state = {hour: 21}
-  }
+  // constructor() {
+  //   super()
+  //   this.state = {hour: 21}
+  // }
   render() {
     return (
       <div>
