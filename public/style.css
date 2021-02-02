@@ -18,7 +18,7 @@ form div {
 
 .leaflet-container {
   width: 100%;
-  height: 80vh;
+  height: 90vh;
 }
 /*  Navbar */
 
@@ -48,4 +48,7 @@ nav a {
 
 .logo-img {
   width: 50%;
+}
+
+.leaflet-div-icon {
 }
