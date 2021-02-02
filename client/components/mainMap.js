@@ -50,6 +50,7 @@ class MainMap extends React.Component {
     console.log(this.state)
     let businessResults = this.state.results
     console.log('NEWLY', businessResults)
+
     return (
       <div>
         <MapContainer
