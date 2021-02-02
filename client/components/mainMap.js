@@ -1,11 +1,9 @@
 import React from 'react'
 import {MapContainer, TileLayer, Marker, Popup} from 'react-leaflet'
 import {businesses} from '../../dummyData/businesses'
-import L from 'leaflet'
-const path = require('path')
+// import L from 'leaflet'
+// const path = require('path')
 
-// const marker = `../images/marker.png`
-//path.join(__dirname, '..', 'public')
 // const businessIcon = new L.Icon({
 //   iconUrl: require(`../../public/images/marker.png`),
 //   iconRetinaUrl: require(`../../public/images/marker.png`),
@@ -17,11 +15,12 @@ const path = require('path')
 //   iconSize: new L.Point(60, 75),
 //   className: 'leaflet-div-icon',
 // })
-
+//1 >> 8pm
+//5 >> 1am
 class MainMap extends React.Component {
   constructor() {
     super()
-    this.state = {hour: 21}
+    this.state = {hour: 5}
   }
   render() {
     return (
@@ -37,7 +36,7 @@ class MainMap extends React.Component {
           />
           {businesses.map(business => {
             return (
-              <Marker position={business.location} icon={businessIcon}>
+              <Marker position={business.location}>
                 <Popup>{business.name}</Popup>
               </Marker>
             )
