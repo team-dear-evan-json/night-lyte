@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import queryString from 'query-string'
-import {MapContainer, TileLayer, Marker, Popup} from 'react-leaflet'
+import {MapContainer, TileLayer, Marker, Popup, Circle} from 'react-leaflet'
 import axios from 'axios'
 
 class MainMap extends React.Component {
@@ -22,10 +22,10 @@ class MainMap extends React.Component {
     await this.getBusinessesFromApi(decodedUrl.address)
   }
 
-  getBusinessesFromApi = locationSearched => {
+  getBusinessesFromApi = async locationSearched => {
     this.setState({loading: true})
 
-    axios
+    await axios
       .get(
         `${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search?location=${locationSearched}`,
         {
@@ -73,20 +73,26 @@ class MainMap extends React.Component {
           scrollWheelZoom={false}
         >
           <TileLayer
-            url="https://api.mapbox.com/styles/v1/kamalt/ckkkid04w2ub017npxtqfeckc/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoia2FtYWx0IiwiYSI6ImNra2tpc2NsdjBjZmcycG9jY21qYWF4MncifQ.Ri_912i2-6xSua8DSQZnZA"
+            url="https://api.mapbox.com/styles/v1/kamalt/ckkoarmdr0uxx17qq5qysvnnl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoia2FtYWx0IiwiYSI6ImNra2tpc2NsdjBjZmcycG9jY21qYWF4MncifQ.Ri_912i2-6xSua8DSQZnZA"
             attribution="Map data &copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors, <a href=&quot;https://creativecommons.org/licenses/by-sa/2.0/&quot;>CC-BY-SA</a>, Imagery &copy; <a href=&quot;https://www.mapbox.com/&quot;>Mapbox</a>"
           />
           {businessResults.map(business => {
             return (
-              <Marker
+              <Circle
                 key={business.id}
-                position={[
+                center={[
                   business.coordinates.latitude,
                   business.coordinates.longitude
                 ]}
+                radius={18}
+                stroke={false}
+                // color="#E9C37B"
+                fill={true}
+                fillColor="#E9C37B"
+                fillOpacity={0.8}
               >
                 <Popup>{business.name}</Popup>
-              </Marker>
+              </Circle>
             )
           })}
         </MapContainer>
