@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import queryString from 'query-string'
 import {MapContainer, TileLayer, Marker, Popup} from 'react-leaflet'
 import axios from 'axios'
 
@@ -6,39 +7,50 @@ class MainMap extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      hour: 21,
+      address: '',
       results: [],
       errorState: null,
-      loading: true
+      loading: true,
+      firstLatitude: 0,
+      firstLongitude: 0
     }
   }
 
-  componentDidMount() {
-    this.getBusinessesFromApi('Brooklyn, NY')
+  async componentDidMount() {
+    let decodedUrl = await queryString.parse(location.search)
+    console.log('decodedUrl address: ', decodedUrl.address)
+    await this.getBusinessesFromApi(decodedUrl.address)
   }
 
-  getBusinessesFromApi = async locationSearched => {
+  getBusinessesFromApi = locationSearched => {
     this.setState({loading: true})
 
-    await axios
+    axios
       .get(
         `${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search?location=${locationSearched}`,
         {
           headers: {
+            accept: 'application/json',
+            'x-requested-with': 'xmlhttprequest',
+            'Access-Control-Allow-Origin': '*',
             Authorization: `Bearer d7me82kfWORLA8U70CIdJzgNKTCzhv-aHEjhB7KNtggEeusVZublUF0AhHlaWsNhzoIfv9KJRPUy7wsK4KglKy2_7BRwVoG1UaRfpEBIz-rjnGM04210jy0hXj0YYHYx`
           },
           params: {
-            limit: 50,
+            limit: 20,
             open_at: 1612270800
           }
         }
       )
       .then(res => {
-        console.log(res.data.businesses)
-        this.setState({results: res.data.businesses, loading: false})
+        this.setState({
+          results: res.data.businesses,
+          loading: false,
+          firstLatitude: res.data.businesses[0].coordinates.latitude,
+          firstLongitude: res.data.businesses[0].coordinates.longitude
+        })
       })
-      .catch(err => {
-        console.log(err)
+      .catch(error => {
+        console.log(error.response)
         this.setState({
           errorState: `Sorry we coudln't find information related to the location you search, do you want to try something else?`,
           loading: false
@@ -47,12 +59,15 @@ class MainMap extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     let businessResults = this.state.results
-    console.log('NEWLY', businessResults)
+    console.log('Long and lat results: ', [
+      this.state.firstLatitude,
+      this.state.firstLongitude
+    ])
     return (
       <div>
         <MapContainer
+          // center={[this.state.firstLatitude, this.state.firstLongitude]}
           center={[40.708173, -73.996129]}
           zoom={12}
           scrollWheelZoom={false}
@@ -64,6 +79,7 @@ class MainMap extends React.Component {
           {businessResults.map(business => {
             return (
               <Marker
+                key={business.id}
                 position={[
                   business.coordinates.latitude,
                   business.coordinates.longitude

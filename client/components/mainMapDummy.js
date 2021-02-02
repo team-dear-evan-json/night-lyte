@@ -20,11 +20,12 @@ class MainMap extends React.Component {
             attribution="Map data &copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors, <a href=&quot;https://creativecommons.org/licenses/by-sa/2.0/&quot;>CC-BY-SA</a>, Imagery &copy; <a href=&quot;https://www.mapbox.com/&quot;>Mapbox</a>"
           />
           {businesses.map(business => {
-            return (
-              <Marker position={business.location}>
-                <Popup>{business.name}</Popup>
-              </Marker>
-            )
+            if (business.close > 3)
+              return (
+                <Marker position={business.location}>
+                  <Popup>{business.name}</Popup>
+                </Marker>
+              )
           })}
         </MapContainer>
       </div>

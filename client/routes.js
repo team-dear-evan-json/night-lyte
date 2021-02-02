@@ -4,6 +4,7 @@ import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {Login, Signup, UserHome, MainMap} from './components'
 import {me} from './store'
+import HomePage from './components/HomePage'
 
 /**
  * COMPONENT
@@ -18,7 +19,8 @@ class Routes extends Component {
 
     return (
       <Switch>
-        <Route parth="/home" component={MainMap} />
+        <Route path="/" exact component={HomePage} />
+        <Route parth="/search" component={MainMap} />
         {/* Routes placed here are available to all visitors */}
         {/* <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
