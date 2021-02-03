@@ -2,7 +2,7 @@ import React from 'react'
 import {MapContainer, TileLayer, Marker, Popup, Circle} from 'react-leaflet'
 import {businesses} from '../../dummyData/businesses'
 import L from 'leaflet'
-//const path = require('path')
+//import ReactLeafletSearch from 'react-leaflet-search'
 const icon = `./images/marker_orb_1x.svg`
 
 const businessIcon = new L.Icon({
@@ -37,6 +37,7 @@ class MainMapDummy extends React.Component {
             attribution="Map data &copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors, <a href=&quot;https://creativecommons.org/licenses/by-sa/2.0/&quot;>CC-BY-SA</a>, Imagery &copy; <a href=&quot;https://www.mapbox.com/&quot;>Mapbox</a>"
             border="0px"
           />
+          {/* <ReactLeafletSearch position="topleft" /> */}
           {businesses.map(business => {
             return (
               <Circle
