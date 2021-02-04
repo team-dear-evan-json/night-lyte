@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import {Login, Signup, UserHome, MainMap, MainMapDummy} from './components'
 import {me} from './store'
 import HomePage from './components/HomePage'
-import LeafletMap from './components/LeafletMap'
+// import LeafletMap from './components/LeafletMap'
 
 /**
  * COMPONENT
@@ -23,7 +23,7 @@ class Routes extends Component {
         <Route path="/" exact component={HomePage} />
         <Route path="/search" component={MainMap} />
         <Route path="/test" component={MainMapDummy} />
-        <Route path="/nav" exact component={LeafletMap} />
+        {/* <Route path="/nav" exact component={LeafletMap} /> */}
 
         {/* Routes placed here are available to all visitors */}
         {/* <Route path="/login" component={Login} />
