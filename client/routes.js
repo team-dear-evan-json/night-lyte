@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, MainMap} from './components'
+import {Login, Signup, UserHome, MainMap, MainMapDummy} from './components'
 import {me} from './store'
+import HomePage from './components/HomePage'
 
 /**
  * COMPONENT
@@ -18,7 +19,10 @@ class Routes extends Component {
 
     return (
       <Switch>
-        <Route parth="/home" component={MainMap} />
+        <Route path="/" exact component={HomePage} />
+        <Route path="/search" component={MainMap} />
+        <Route path="/test" component={MainMapDummy} />
+
         {/* Routes placed here are available to all visitors */}
         {/* <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
