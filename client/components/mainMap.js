@@ -44,10 +44,12 @@ class MainMap extends React.Component {
     //   this.state.firstLatitude,
     //   this.state.firstLongitude,
     // ])
+
     return (
       <div>
         <MapContainer
           // center={[this.state.firstLatitude, this.state.firstLongitude]}
+
           center={[40.708173, -73.996129]}
           zoom={12}
           scrollWheelZoom={false}
@@ -56,6 +58,12 @@ class MainMap extends React.Component {
             url="https://api.mapbox.com/styles/v1/kamalt/ckkoarmdr0uxx17qq5qysvnnl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoia2FtYWx0IiwiYSI6ImNra2tpc2NsdjBjZmcycG9jY21qYWF4MncifQ.Ri_912i2-6xSua8DSQZnZA"
             attribution="Map data &copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors, <a href=&quot;https://creativecommons.org/licenses/by-sa/2.0/&quot;>CC-BY-SA</a>, Imagery &copy; <a href=&quot;https://www.mapbox.com/&quot;>Mapbox</a>"
           />
+
+          <TileLayer
+            url="http://www.mapquestapi.com/traffic/v2/incidents?key=BtyAKqQXiHGEjchJnJ5lhoMY8XxlZiN0&boundingBox=39.95,-105.25,39.52,-104.71&filters=construction,incident"
+            attribution="Map data &copy; <a href=&quot;http://hello.mapquest.com/terms-of-use/&quot;>MapQuest</a> contributors"
+          />
+
           {this.props.businesses.map(business => {
             return (
               <Circle
