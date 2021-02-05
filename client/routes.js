@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import {Login, Signup, UserHome, MainMap, MainMapDummy} from './components'
 import {me} from './store'
 import HomePage from './components/HomePage'
+import LeafletMap from './components/LeafletMap'
 
 /**
  * COMPONENT

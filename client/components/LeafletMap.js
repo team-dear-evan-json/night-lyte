@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import queryString from 'query-string'
 import {Map, TileLayer, Popup, Circle} from 'react-leaflet'
