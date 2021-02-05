@@ -20,8 +20,9 @@ class Routes extends Component {
     return (
       <Switch>
         <Route path="/" exact component={HomePage} />
-        <Route path="/search" component={MainMap} />
+        <Route path="/search" component={LeafletMap} />
         <Route path="/test" component={MainMapDummy} />
+        {/* <Route path="/nav" exact component={LeafletMap} /> */}
 
         {/* Routes placed here are available to all visitors */}
         {/* <Route path="/login" component={Login} />
