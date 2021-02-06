@@ -60,7 +60,7 @@
     "pg": "^7.18.2",
     "pg-hstore": "^2.3.2",
     "prop-types": "^15.7.2",
-    "react": "^16.14.0",
+    "react": "^17.0.1",
     "react-dom": "^16.14.0",
     "react-leaflet": "^3.1.0",
     "react-leaflet-google-layer": "^2.0.3",

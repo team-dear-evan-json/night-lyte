@@ -10,7 +10,8 @@ import {
   LayersControl
 } from 'react-leaflet'
 import axios from 'axios'
-import {getBusinessesFromApi} from '../store/businesses'
+import MainMapDummy from './mainMapDummy'
+import businesses, {getBusinessesFromApi} from '../store/businesses'
 
 class MainMap extends React.Component {
   constructor(props) {
@@ -54,35 +55,35 @@ class MainMap extends React.Component {
           zoom={12}
           scrollWheelZoom={false}
         >
-          <TileLayer
-            url="https://api.mapbox.com/styles/v1/kamalt/ckkoarmdr0uxx17qq5qysvnnl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoia2FtYWx0IiwiYSI6ImNra2tpc2NsdjBjZmcycG9jY21qYWF4MncifQ.Ri_912i2-6xSua8DSQZnZA"
-            attribution="Map data &copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors, <a href=&quot;https://creativecommons.org/licenses/by-sa/2.0/&quot;>CC-BY-SA</a>, Imagery &copy; <a href=&quot;https://www.mapbox.com/&quot;>Mapbox</a>"
-          />
+          <LayersControl position="topright">
+            <LayersControl.BaseLayer checked name="OpenBusinesses">
+              <TileLayer
+                url="https://api.mapbox.com/styles/v1/kamalt/ckkoarmdr0uxx17qq5qysvnnl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoia2FtYWx0IiwiYSI6ImNra2tpc2NsdjBjZmcycG9jY21qYWF4MncifQ.Ri_912i2-6xSua8DSQZnZA"
+                attribution="Map data &copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors, <a href=&quot;https://creativecommons.org/licenses/by-sa/2.0/&quot;>CC-BY-SA</a>, Imagery &copy; <a href=&quot;https://www.mapbox.com/&quot;>Mapbox</a>"
+              />
+            </LayersControl.BaseLayer>
 
-          <TileLayer
-            url="http://www.mapquestapi.com/traffic/v2/incidents?key=BtyAKqQXiHGEjchJnJ5lhoMY8XxlZiN0&boundingBox=39.95,-105.25,39.52,-104.71&filters=construction,incident"
-            attribution="Map data &copy; <a href=&quot;http://hello.mapquest.com/terms-of-use/&quot;>MapQuest</a> contributors"
-          />
-
-          {this.props.businesses.map(business => {
-            return (
-              <Circle
-                key={business.id}
-                center={[
-                  business.coordinates.latitude,
-                  business.coordinates.longitude
-                ]}
-                radius={18}
-                stroke={false}
-                // color="#E9C37B"
-                fill={true}
-                fillColor="#E9C37B"
-                fillOpacity={0.8}
-              >
-                <Popup>{business.name}</Popup>
-              </Circle>
-            )
-          })}
+            <LayersControl.Overlay checked name="Business">
+              {this.props.businesses.map(business => {
+                return (
+                  <Circle
+                    key={business.id}
+                    center={[
+                      business.coordinates.latitude,
+                      business.coordinates.longitude
+                    ]}
+                    radius={18}
+                    stroke={false}
+                    fill={true}
+                    fillColor="#E9C37B"
+                    fillOpacity={0.8}
+                  >
+                    <Popup>{business.name}</Popup>
+                  </Circle>
+                )
+              })}
+            </LayersControl.Overlay>
+          </LayersControl>
         </MapContainer>
       </div>
     )
