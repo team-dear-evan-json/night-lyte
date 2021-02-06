@@ -6,6 +6,8 @@ import {withLeaflet} from 'react-leaflet'
 class Routing extends MapLayer {
   createLeafletElement() {
     const {map} = this.props
+    const {start} = this.props
+    const {destination} = this.props
     let leafletElement = L.Routing.control({
       waypoints: [
         L.latLng(40.7269050978696, -74.00726690891673),
