@@ -6,7 +6,7 @@ import {Login, Signup, UserHome, MainMap} from './components'
 import MainMapDummy from './components/mainMapDummy'
 import {me} from './store'
 import HomePage from './components/HomePage'
-// import {LeafletMap} from './components/LeafletMap'
+import LeafletMap from './components/LeafletMap'
 
 /**
  * COMPONENT
