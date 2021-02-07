@@ -2,11 +2,18 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, MainMap} from './components'
-import MainMapDummy from './components/mainMapDummy'
+import {
+  Login,
+  Signup,
+  UserHome,
+  MainMap,
+  MainMapDummy,
+  CrimesMap
+} from './components'
 import {me} from './store'
 import HomePage from './components/HomePage'
 import LeafletMap from './components/LeafletMap'
+// import CrimesMap from './components/CrimesMap'
 
 /**
  * COMPONENT
@@ -22,9 +29,10 @@ class Routes extends Component {
     return (
       <Switch>
         <Route path="/" exact component={HomePage} />
-        <Route path="/search" component={MainMap} />
+        <Route path="/search" component={LeafletMap} />
         <Route path="/test" component={MainMapDummy} />
-        <Route path="/nav" exact component={LeafletMap} />
+        <Route exact path="/crimes" component={CrimesMap} />
+        {/* <Route path="/nav" exact component={LeafletMap} /> */}
 
         {/* Routes placed here are available to all visitors */}
         {/* <Route path="/login" component={Login} />

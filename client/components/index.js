@@ -6,5 +6,6 @@
 export {default as Navbar} from './navbar'
 export {default as UserHome} from './user-home'
 export {default as MainMap} from './mainMap'
-// export {default as MainMapDummy} from './MainMapDummy'
+export {default as MainMapDummy} from './MainMapDummy'
+export {default as CrimesMap} from './CrimesMap'
 // export {Login, Signup} from './auth-form'
