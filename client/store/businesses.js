@@ -31,9 +31,6 @@ export const getBusinessesFromApi = (
     allData.push(...data.businesses)
     total = data.total
 
-    console.log('data total!!!!!!!', data)
-
-    console.log('allData!!!!', allData)
     dispatch(setBusinesses(allData))
   } catch (err) {
     console.error('error in setBusinesses thunk', err)

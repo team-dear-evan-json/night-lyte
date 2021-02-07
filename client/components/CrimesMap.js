@@ -11,6 +11,8 @@ import {
   LayersControl
 } from 'react-leaflet'
 
+export let allCrimes
+
 class CrimesMap extends React.Component {
   constructor(props) {
     super(props)
@@ -23,7 +25,6 @@ class CrimesMap extends React.Component {
 
   render() {
     const crimes = this.props.crimes
-    let allCrimes
 
     if (crimes.length > 0) {
       allCrimes = crimes[0].map(crime => (
@@ -42,19 +43,19 @@ class CrimesMap extends React.Component {
     }
     return (
       <div>
-        <Map center={[40.708173, -73.996129]} zoom={12} scrollWheelZoom={false}>
+        {/* <Map center={[40.708173, -73.996129]} zoom={12} scrollWheelZoom={false}>
           <LayersControl position="topleft">
             <LayersControl.BaseLayer checked name="OpenStreetMap">
               <TileLayer
                 url="https://api.mapbox.com/styles/v1/kamalt/ckkoarmdr0uxx17qq5qysvnnl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoia2FtYWx0IiwiYSI6ImNra2tpc2NsdjBjZmcycG9jY21qYWF4MncifQ.Ri_912i2-6xSua8DSQZnZA"
-                attribution="Map data &copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors, <a href=&quot;https://creativecommons.org/licenses/by-sa/2.0/&quot;>CC-BY-SA</a>, Imagery &copy; <a href=&quot;https://www.mapbox.com/&quot;>Mapbox</a>"
+                attribution='Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="https://www.mapbox.com/">Mapbox</a>'
               />
             </LayersControl.BaseLayer>
             <LayersControl.Overlay checked name="Crime cases">
               {allCrimes}
             </LayersControl.Overlay>
           </LayersControl>
-        </Map>
+        </Map> */}
       </div>
     )
   }
