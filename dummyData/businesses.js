@@ -1,3 +1,30 @@
+export const geojson = [
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-73.993674, 40.719127]
+    },
+    properties: {
+      'marker-color': '#3bb2d0',
+      'marker-size': 'large',
+      'marker-symbol': 'rocket'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [37.775408, -122.413682]
+    },
+    properties: {
+      'marker-color': '#3bb2d0',
+      'marker-size': 'large',
+      'marker-symbol': 'rocket'
+    }
+  }
+]
+
 export const businesses = [
   {name: 'a business', location: [40.719127, -73.993674], close: 1},
   {name: 'a business', location: [40.719745, -73.998738], close: 1},

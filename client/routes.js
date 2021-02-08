@@ -6,6 +6,7 @@ import {Login, Signup, UserHome, MainMap, MainMapDummy} from './components'
 import {me} from './store'
 import HomePage from './components/HomePage'
 import LeafletMap from './components/LeafletMap'
+import MapBox from './components/MapBox'
 
 /**
  * COMPONENT
@@ -20,10 +21,11 @@ class Routes extends Component {
 
     return (
       <Switch>
-        <Route path="/" exact component={HomePage} />
-        <Route path="/search" component={LeafletMap} />
+        {/* <Route path="/" exact component={HomePage} /> */}
+        <Route path="/" component={MapBox} />
         <Route path="/test" component={MainMapDummy} />
-        {/* <Route path="/nav" exact component={LeafletMap} /> */}
+        <Route path="/testingAPI" component={MainMap} />
+        {/* <Route path="/nav" exact component={MapBox} /> */}
 
         {/* Routes placed here are available to all visitors */}
         {/* <Route path="/login" component={Login} />

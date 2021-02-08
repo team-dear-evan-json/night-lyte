@@ -60,3 +60,97 @@ class MainMapDummy extends React.Component {
 }
 
 export default MainMapDummy
+
+// import * as React from 'react'
+// import {Component} from 'react'
+// import MapGL from 'react-map-gl'
+// // import mapboxgl from 'mapbox-gl'
+// import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions'
+// import {businesses, geojson} from '../../dummyData/businesses'
+// import {connect} from 'react-redux'
+// import {getBusinessesFromApi} from '../store/businesses'
+
+// const MAPBOX_TOKEN =
+//   'pk.eyJ1IjoicmFmYWVsYW5kcmVzNTQiLCJhIjoiY2todXR1enlqMDltYjJxbWw4dnp4aDZrYyJ9.rP9cSw3nVs_ysNYCemYwKw'
+
+// class MapBox extends Component {
+//   constructor(props) {
+//     super(props)
+//     this.state = {
+//       viewport: {
+//         latitude: 40.748514,
+//         longitude: -73.985664,
+//         zoom: 12,
+//       },
+//       address: '1 pike, new york',
+//       hourForYelp: 1612825200,
+//     }
+//   }
+
+//   async componentDidMount() {
+//     const mapboxobj = this.mapWrapper.getMap()
+//     // Creates new directions control instance
+//     const directions = new MapboxDirections({
+//       accessToken: MAPBOX_TOKEN,
+//       unit: 'metric',
+//       profile: 'mapbox/walking',
+//     })
+//     // Integrates directions control with map
+//     mapboxobj.addControl(directions, 'top-left')
+
+//     await this.props.getBusinessesFromApi(
+//       this.state.address,
+//       this.state.hourForYelp
+//     )
+//     // console.log('this.props.businesses:', this.props.businesses)
+//     this.props.businesses.forEach((business) => {
+//       const marker = new mapboxgl.Marker()
+//         .setLngLat([
+//           business.coordinates.longitude,
+//           business.coordinates.latitude,
+//         ])
+//         .addTo(mapboxobj)
+//     })
+//   }
+
+//   render() {
+//     return (
+//       <MapGL
+//         ref={(el) => (this.mapWrapper = el)}
+//         {...this.state.viewport}
+//         width="100vw"
+//         height="100vh"
+//         mapStyle="mapbox://styles/mapbox/dark-v9"
+//         onViewportChange={(viewport) => this.setState({viewport})}
+//         mapboxApiAccessToken={MAPBOX_TOKEN}
+//       />
+//     )
+//   }
+// }
+
+// const mapState = (state) => {
+//   return {
+//     businesses: state.businesses,
+//   }
+// }
+
+// const mapDispatch = (dispatch) => {
+//   return {
+//     getBusinessesFromApi: (inputAddress, hour) =>
+//       dispatch(getBusinessesFromApi(inputAddress, hour)),
+//   }
+// }
+// export default connect(mapState, mapDispatch)(MapBox)
+
+//Manipulate the route object returned from directions
+// map.on('load', function () {
+//   directions.on('route', function (ev) {
+// console.log(ev.route)
+// console.log(ev)
+// var styleSpec = ev.route;
+// var styleSpecBox = document.getElementById('json-response');
+// var styleSpecText = JSON.stringify(styleSpec, null, 2);
+// var syntaxStyleSpecText = syntaxHighlight(styleSpecText);
+// styleSpecBox.innerHTML = syntaxStyleSpecText;
+//   })
+// })
