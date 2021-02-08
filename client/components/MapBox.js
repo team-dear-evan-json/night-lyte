@@ -91,8 +91,8 @@ mapboxgl.accessToken =
   'pk.eyJ1IjoicmFmYWVsYW5kcmVzNTQiLCJhIjoiY2todXR1enlqMDltYjJxbWw4dnp4aDZrYyJ9.rP9cSw3nVs_ysNYCemYwKw'
 
 class MapBox extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       longitude: -122.45,
       latitude: 37.78,
@@ -125,7 +125,7 @@ class MapBox extends React.Component {
     // const marker2 = new mapboxgl.Marker()
     //   .setLngLat([-73.998738, 40.719745])
     //   .addTo(map)
-    await this.props.getBusinessesFromApi('1 pike, new york', 1612270800)
+    await this.props.getBusinessesFromApi('1 pike, new york', 1612825200)
 
     const layerStyle = {
       id: 'point',
@@ -135,27 +135,36 @@ class MapBox extends React.Component {
         'circle-color': '#007cbf'
       }
     }
-    businesses.forEach(business => {
+    this.props.businesses.forEach(business => {
       const marker2 = new mapboxgl.Marker()
-        .setLngLat([business.location[1], business.location[0]])
+        .setLngLat([
+          business.coordinates.longitude,
+          business.coordinates.latitude
+        ])
         .addTo(map)
     })
-    // map.on('load', () => {
 
-    // })
-    // businesses.forEach((business) => {
-    //   const marker2 = new mapboxgl.Marker()
-    //     .setLngLat([business.location[1], business.location[0]])
-    //     .addTo(map)
-    // })
-
-    // const myLayer = L.mapbox.featureLayer().setGeoJSON(geojson).addTo(mapSimple);
+    map.on('move', () => {
+      this.setState({
+        lng: map.getCenter().lng.toFixed(6),
+        lat: map.getCenter().lat.toFixed(6),
+        zoom: map.getZoom().toFixed(2)
+      })
+    })
   }
 
   render() {
     return (
       // Populates map by referencing map's container property
-      <div ref={el => (this.mapWrapper = el)} className="mapWrapper" />
+      <div>
+        <div ref={el => (this.mapWrapper = el)} className="mapWrapper" />
+        <div className="sidebarStyle">
+          <div>
+            Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom:{' '}
+            {this.state.zoom}
+          </div>
+        </div>
+      </div>
     )
   }
 }
