@@ -1,9 +1,9 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import queryString from 'query-string'
 import {Map, TileLayer, Popup, Circle} from 'react-leaflet'
 import Routing from './RoutingMachine'
 import {getBusinessesFromApi} from '../store/businesses'
+import {connect} from 'react-redux'
 
 class LeafletMap extends React.Component {
   state = {
