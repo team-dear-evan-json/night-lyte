@@ -80,3 +80,12 @@ nav a {
   opacity: 0.8;
   /* 3rd combination*/
 }
+
+.marker {
+  background-image: url('images/icon.png');
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  opacity: 0.8;
+}
