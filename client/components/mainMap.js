@@ -1,9 +1,17 @@
 import React, {useState, useEffect} from 'react'
 import {connect} from 'react-redux'
 import queryString from 'query-string'
-import {MapContainer, TileLayer, Marker, Popup, Circle} from 'react-leaflet'
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Circle,
+  Map
+} from 'react-leaflet'
 import axios from 'axios'
 import {getBusinessesFromApi} from '../store/businesses'
+import MapBox from './MapBox'
 
 class MainMap extends React.Component {
   constructor(props) {
@@ -39,7 +47,7 @@ class MainMap extends React.Component {
     // ])
     return (
       <div>
-        <MapContainer
+        <Map
           // center={[this.state.firstLatitude, this.state.firstLongitude]}
           center={[40.708173, -73.996129]}
           zoom={12}
@@ -49,6 +57,7 @@ class MainMap extends React.Component {
             url="https://api.mapbox.com/styles/v1/kamalt/ckkoarmdr0uxx17qq5qysvnnl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoia2FtYWx0IiwiYSI6ImNra2tpc2NsdjBjZmcycG9jY21qYWF4MncifQ.Ri_912i2-6xSua8DSQZnZA"
             attribution="Map data &copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors, <a href=&quot;https://creativecommons.org/licenses/by-sa/2.0/&quot;>CC-BY-SA</a>, Imagery &copy; <a href=&quot;https://www.mapbox.com/&quot;>Mapbox</a>"
           />
+          <MapBox />
           {this.props.businesses.map(business => {
             return (
               <Circle
@@ -68,7 +77,7 @@ class MainMap extends React.Component {
               </Circle>
             )
           })}
-        </MapContainer>
+        </Map>
       </div>
     )
   }
