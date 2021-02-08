@@ -31,7 +31,7 @@ export const fetchCrimesFromApi = () => async dispatch => {
 
   try {
     const res = await axios.get(
-      `https://data.cityofnewyork.us/resource/qsur-nxze.json?$limit=50`,
+      `https://data.cityofnewyork.us/resource/qsur-nxze.json?$limit=1000`,
       config
     )
     dispatch(getCrimes(res.data || defaultCrimes))
