@@ -19,7 +19,7 @@ class MapBox extends Component {
         zoom: 12
       },
       address: '1 pike, new york',
-      hourForYelp: 1612270800
+      hourForYelp: 1612825200
     }
   }
 
