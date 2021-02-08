@@ -24,6 +24,7 @@ class Routes extends Component {
         <Route path="/" exact component={HomePage} />
         <Route path="/search" component={MapBox} />
         <Route path="/test" component={MainMapDummy} />
+        <Route path="/testingAPI" component={MainMap} />
         {/* <Route path="/nav" exact component={MapBox} /> */}
 
         {/* Routes placed here are available to all visitors */}
