@@ -21,8 +21,8 @@ class Routes extends Component {
 
     return (
       <Switch>
-        <Route path="/" exact component={HomePage} />
-        <Route path="/search" component={MapBox} />
+        {/* <Route path="/" exact component={HomePage} /> */}
+        <Route path="/" component={MapBox} />
         <Route path="/test" component={MainMapDummy} />
         <Route path="/testingAPI" component={MainMap} />
         {/* <Route path="/nav" exact component={MapBox} /> */}
