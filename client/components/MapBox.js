@@ -1,10 +1,10 @@
 import React from 'react'
 import mapboxgl from 'mapbox-gl'
 import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions'
-import {businesses, geojson} from '../../dummyData/businesses'
+// import {businesses, geojson} from '../../dummyData/businesses'
 import {getBusinessesFromApi} from '../store/businesses'
+import {fetchCrimesFromApi} from '../store/crimes'
 import {connect} from 'react-redux'
-// import ReactMapGL, {Source, Layer} from 'react-mapbox-gl'
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoicmFmYWVsYW5kcmVzNTQiLCJhIjoiY2todXR1enlqMDltYjJxbWw4dnp4aDZrYyJ9.rP9cSw3nVs_ysNYCemYwKw'
@@ -17,6 +17,7 @@ class MapBox extends React.Component {
       latitude: 37.78,
       zoom: 14,
       geoAddress: ''
+      // visibility: 'visible',
     }
   }
 
@@ -33,6 +34,7 @@ class MapBox extends React.Component {
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl
     })
+
     map.addControl(geocoder, 'top-right')
 
     // Creates new directions control instance
@@ -49,13 +51,19 @@ class MapBox extends React.Component {
       this.setState({geoAddress: geoAddress})
       await this.props.getBusinessesFromApi(geoAddress, 1612825200)
       this.props.businesses.forEach(business => {
-        const marker = new mapboxgl.Marker()
+        new mapboxgl.Marker()
           .setLngLat([
             business.coordinates.longitude,
             business.coordinates.latitude
           ])
           .addTo(map)
       })
+      await this.props.loadAllCrimes()
+      this.props.crimes[0].map(crime =>
+        new mapboxgl.Marker()
+          .setLngLat([crime.longitude, crime.latitude])
+          .addTo(map)
+      )
     })
 
     map.on('move', () => {
@@ -66,25 +74,58 @@ class MapBox extends React.Component {
       })
     })
 
-    const layerStyle = {
-      id: 'point',
-      type: 'circle',
-      paint: {
-        'circle-radius': 10,
-        'circle-color': '#007cbf'
-      }
-    }
+    // // Adds layer
+    // map.addSource('businesses', {
+    //   type: 'vector',
+    //   url: 'mapbox://mapbox.2opop9hr',
+    // })
+
+    // map.addLayer({
+    //   id: 'businesses',
+    //   type: 'circle',
+    //   source: 'businesses',
+    //   layout: {
+    //     // make layer visible by default
+    //     visibility: this.state.visibility,
+    //   },
+    //   paint: {
+    //     'circle-radius': 8,
+    //     'circle-color': 'rgba(55,148,179,1)',
+    //   },
+    //   'source-layer': 'businesses-cusco',
+    // })
+
+    // const layerStyle = {
+    //   id: 'point',
+    //   type: 'circle',
+    //   paint: {
+    //     'circle-radius': 10,
+    //     'circle-color': '#007cbf',
+    //   },
+    // }
   }
+
+  // handleClick = () => {
+  //   //   // toggle visibility based on type
+  //   this.setState({visibility: !this.state.visibility}) // use setLayoutProperty
+  // }
+
   render() {
     return (
       // Populates map by referencing map's container property
       <div>
-        <div ref={el => (this.mapWrapper = el)} className="mapWrapper" />
-        <div className="sidebarStyle">
-          <div>
-            Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom:{' '}
-            {this.state.zoom} | geoAddress:
-            {this.state.geoAddress}
+        {/* <CrimesMap /> */}
+        {/* <button onClick={this.handleClick}>business</button>
+        <button onClick={this.handleClick}>crome</button> */}
+        <div ref={el => (this.mapWrapper = el)} className="mapWrapper">
+          <div className="sidebarStyle">
+            <div>
+              {/* <Layer type="symbol" layout={{'icon-image': 'harbor-15'}}> */}
+              Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom:{' '}
+              {this.state.zoom} | geoAddress:
+              {this.state.geoAddress}
+              {/* </Layer> */}
+            </div>
           </div>
         </div>
       </div>
@@ -94,12 +135,14 @@ class MapBox extends React.Component {
 
 const mapState = state => {
   return {
-    businesses: state.businesses
+    businesses: state.businesses,
+    crimes: state.crimes
   }
 }
 
 const mapDispatch = dispatch => {
   return {
+    loadAllCrimes: () => dispatch(fetchCrimesFromApi()),
     getBusinessesFromApi: (inputAddress, hour) =>
       dispatch(getBusinessesFromApi(inputAddress, hour))
   }
