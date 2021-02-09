@@ -14,7 +14,7 @@ export const getBusinessesFromApi = (
     const allData = []
     // const center = []
     const {data} = await axios.get(
-      `${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search?location=${locationSearched}`,
+      `${'https://corsanywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search?location=${locationSearched}`,
       {
         headers: {
           accept: 'application/json',
