@@ -13,8 +13,8 @@ class MapBox extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      longitude: -122.45,
-      latitude: 37.78,
+      longitude: -74.00934,
+      latitude: 40.70531,
       zoom: 14,
       geoAddress: ''
     }
@@ -25,7 +25,7 @@ class MapBox extends React.Component {
     const map = new mapboxgl.Map({
       container: this.mapWrapper,
       style: 'mapbox://styles/mapbox/dark-v10',
-      center: [-73.985664, 40.748514],
+      center: [-74.00934, 40.70531],
       zoom: 12
     })
     // Creates a geo search control
@@ -44,12 +44,20 @@ class MapBox extends React.Component {
     // Integrates directions control with map
     map.addControl(directions, 'top-right')
 
+    // --- MARKER TEST ----
+    const businessMarker = new mapboxgl.Marker({
+      element: this.businessMarkerWrapper
+    })
+    // --------------------
+
     geocoder.on('result', async ({result}) => {
       const geoAddress = result.place_name
       this.setState({geoAddress: geoAddress})
       await this.props.getBusinessesFromApi(geoAddress, 1612825200)
       this.props.businesses.forEach(business => {
-        const marker = new mapboxgl.Marker()
+        // --- MARKER TEST ----
+        businessMarker
+          // --------------------
           .setLngLat([
             business.coordinates.longitude,
             business.coordinates.latitude
@@ -67,10 +75,26 @@ class MapBox extends React.Component {
     })
 
     // --- MARKER TEST ----
-    const element = document.createElement('div')
-    element.className = 'marker'
-    element.style.backgroundImage = 'url(images/icon.png)'
-    new mapboxgl.Marker(element).setLngLat([40.70531, -74.00934]).addTo(map)
+    //Works!!
+    // const marker = new mapboxgl.Marker({
+    //   element: this.businessMarkerWrapper,
+    // })
+    //   .setLngLat([-74.00934, 40.70531])
+    //   .addTo(map)
+
+    //Attempt 1:
+    // const element = document.createElement('div')
+    // element.className = 'test-marker'
+    // console.log(`>>>>`, typeof elmemt)
+    // element.style.backgroundImage = 'url(images/icon.png)'
+    // new mapboxgl.Marker(element).setLngLat([-74.00934, 40.70531]).addTo(map)
+
+    //Attempt 2:
+    // new mapboxgl.Marker({
+    //   element: <img className="icon" src='../images/icon.png' />
+    // }).setLngLat([-74.00934, 40.70531]).addTo(map)
+
+    // Attempt 3:
 
     // --------------------
   }
@@ -80,15 +104,15 @@ class MapBox extends React.Component {
       <div>
         <div ref={el => (this.mapWrapper = el)} className="mapWrapper" />
         {/* --- MARKER TEST ---- */}
-        {/* <div
-          ref={(el) => (this.markerWrapper = el)}
-          className="markerWrapper"
-        /> */}
+        <div
+          ref={el => (this.businessMarkerWrapper = el)}
+          className="businessMarkerWrapper"
+        />
         {/* -------------------- */}
         <div className="sidebarStyle">
           <div>
-            Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom:{' '}
-            {this.state.zoom} | Address:
+            page: /markers | Longitude: {this.state.lng} | Latitude:{' '}
+            {this.state.lat} | Zoom: {this.state.zoom} | Address:
             {this.state.geoAddress}
           </div>
         </div>

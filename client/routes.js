@@ -23,10 +23,10 @@ class Routes extends Component {
     return (
       <Switch>
         {/* <Route path="/" exact component={HomePage} /> */}
-        <Route path="/" component={MapBox} />
         <Route path="/markers" component={TestMapBox} />
         <Route path="/test" component={MainMapDummy} />
         <Route path="/testingAPI" component={MainMap} />
+        <Route exact path="/" component={MapBox} />
         {/* <Route path="/nav" exact component={MapBox} /> */}
 
         {/* Routes placed here are available to all visitors */}

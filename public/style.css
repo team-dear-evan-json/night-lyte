@@ -68,32 +68,44 @@ nav a {
   padding: 6px;
   font-weight: bold;
 }
-.mapboxgl-marker {
-  /* width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  border: 1px solid gray;
-  background-color: yellow; */
-  /* 1st combination */
-  /* width: 25px;
-  backgroundImage: `./images/marker_orb_1x.svg`;
-  height: 25px;
-  border-radius: 50%;
-  border: 1px solid gray;
-  background-color: lightblue; */
 
-  /* 2nd combination */
-  /* background-image: url('images/icon.png');
+/* mapboxgl- MARKERS*/
+
+/* 1st combination */
+/* .mapboxgl-marker {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 1px solid gray;
+  background-color: yellow;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 1px solid gray;
+  background-color: lightblue;
+} */
+
+/* 2nd combination */
+/* .mapboxgl-marker {
+  background-image: url('images/icon.png');
   background-size: cover;
   width: 20px;
   height: 20px;
   border-radius: 50%;
   opacity: 0.8;
   z-index: 1;
-  /* 3rd combination*/
-}
+} */
 
-.marker {
+/* .marker {
+  background-image: url('images/icon.png');
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  opacity: 0.8;
+} */
+
+.businessMarkerWrapper {
   background-image: url('images/icon.png');
   background-size: cover;
   width: 20px;
@@ -112,4 +124,14 @@ nav a {
   border-radius: 50%;
   opacity: 0.8;
 } */
+
+/* .test-marker {
+  background-image: url('images/icon.png');
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  opacity: 0.8;
+} */
+
 /* ------------------------------ */
