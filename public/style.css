@@ -83,7 +83,7 @@ nav a {
   background-color: lightblue; */
 
   /* 2nd combination */
-  background-image: url('images/icon.png');
+  /* background-image: url('images/icon.png');
   background-size: cover;
   width: 20px;
   height: 20px;
@@ -101,3 +101,15 @@ nav a {
   border-radius: 50%;
   opacity: 0.8;
 }
+
+/* CUSTOM MARKERS TROUBLESHOOTING!!!! */
+
+/* .markerWrapper {
+  background-image: url('images/icon.png');
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  opacity: 0.8;
+} */
+/* ------------------------------ */

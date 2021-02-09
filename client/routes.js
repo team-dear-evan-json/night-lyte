@@ -7,6 +7,7 @@ import {me} from './store'
 import HomePage from './components/HomePage'
 import LeafletMap from './components/LeafletMap'
 import MapBox from './components/MapBox'
+import TestMapBox from './components/TestMapBox'
 
 /**
  * COMPONENT
@@ -23,6 +24,7 @@ class Routes extends Component {
       <Switch>
         {/* <Route path="/" exact component={HomePage} /> */}
         <Route path="/" component={MapBox} />
+        <Route path="/markers" component={TestMapBox} />
         <Route path="/test" component={MainMapDummy} />
         <Route path="/testingAPI" component={MainMap} />
         {/* <Route path="/nav" exact component={MapBox} /> */}

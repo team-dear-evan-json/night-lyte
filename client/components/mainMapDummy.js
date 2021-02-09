@@ -154,3 +154,13 @@ export default MainMapDummy
 // styleSpecBox.innerHTML = syntaxStyleSpecText;
 //   })
 // })
+
+// LAYER SNIPPET
+// const layerStyle = {
+//   id: 'point',
+//   type: 'circle',
+//   paint: {
+//     'circle-radius': 10,
+//     'circle-color': '#007cbf'
+//   }
+// }
