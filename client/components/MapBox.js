@@ -17,6 +17,7 @@ class MapBox extends React.Component {
       latitude: 37.78,
       zoom: 14,
       geoAddress: ''
+      // visibility: 'visible',
     }
   }
 
@@ -33,6 +34,7 @@ class MapBox extends React.Component {
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl
     })
+
     map.addControl(geocoder, 'top-right')
 
     // Creates new directions control instance
@@ -66,6 +68,27 @@ class MapBox extends React.Component {
       })
     })
 
+    // // Adds layer
+    // map.addSource('businesses', {
+    //   type: 'vector',
+    //   url: 'mapbox://mapbox.2opop9hr',
+    // })
+
+    // map.addLayer({
+    //   id: 'businesses',
+    //   type: 'circle',
+    //   source: 'businesses',
+    //   layout: {
+    //     // make layer visible by default
+    //     visibility: this.state.visibility,
+    //   },
+    //   paint: {
+    //     'circle-radius': 8,
+    //     'circle-color': 'rgba(55,148,179,1)',
+    //   },
+    //   'source-layer': 'businesses-cusco',
+    // })
+
     const layerStyle = {
       id: 'point',
       type: 'circle',
@@ -75,16 +98,25 @@ class MapBox extends React.Component {
       }
     }
   }
+
+  // handleClick = () => {
+  //   //   // toggle visibility based on type
+  //   this.setState({visibility: !this.state.visibility}) // use setLayoutProperty
+  // }
+
   render() {
     return (
       // Populates map by referencing map's container property
       <div>
-        <div ref={el => (this.mapWrapper = el)} className="mapWrapper" />
-        <div className="sidebarStyle">
-          <div>
-            Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom:{' '}
-            {this.state.zoom} | geoAddress:
-            {this.state.geoAddress}
+        {/* <button onClick={this.handleClick}>business</button>
+        <button onClick={this.handleClick}>crome</button> */}
+        <div ref={el => (this.mapWrapper = el)} className="mapWrapper">
+          <div className="sidebarStyle">
+            <div>
+              Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom:{' '}
+              {this.state.zoom} | geoAddress:
+              {this.state.geoAddress}
+            </div>
           </div>
         </div>
       </div>
