@@ -4,7 +4,7 @@ import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-direct
 import {businesses, geojson} from '../../dummyData/businesses'
 import {getBusinessesFromApi} from '../store/businesses'
 import {connect} from 'react-redux'
-// import ReactMapGL, {Source, Layer} from 'react-mapbox-gl'
+import ReactMapGL, {Source, Layer} from 'react-mapbox-gl'
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoicmFmYWVsYW5kcmVzNTQiLCJhIjoiY2todXR1enlqMDltYjJxbWw4dnp4aDZrYyJ9.rP9cSw3nVs_ysNYCemYwKw'
@@ -113,9 +113,11 @@ class MapBox extends React.Component {
         <div ref={el => (this.mapWrapper = el)} className="mapWrapper">
           <div className="sidebarStyle">
             <div>
+              {/* <Layer type="symbol" layout={{'icon-image': 'harbor-15'}}> */}
               Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom:{' '}
               {this.state.zoom} | geoAddress:
               {this.state.geoAddress}
+              {/* </Layer> */}
             </div>
           </div>
         </div>

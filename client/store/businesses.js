@@ -31,7 +31,7 @@ export const getBusinessesFromApi = (
     allData.push(...data.businesses)
     total = data.total
     // center = [data.region.center.lat, ata.region.center.lng]
-    console.log('data total!!!!!!!', data)
+
     // while (total > 0) {
     //   const {data} = await axios.get(
     //     `${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search?location=${locationSearched}`,
@@ -53,7 +53,7 @@ export const getBusinessesFromApi = (
     //   total -= 50
     //   offset += 50
     // }
-    console.log('allData!!!!', allData)
+
     dispatch(setBusinesses(allData))
   } catch (err) {
     console.error('error in setBusinesses thunk', err)
