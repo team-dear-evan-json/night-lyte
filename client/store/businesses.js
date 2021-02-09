@@ -12,7 +12,7 @@ export const getBusinessesFromApi = (
     let total = 0
     let offset = 51
     const allData = []
-    // const center = []
+
     const {data} = await axios.get(
       `${'https://corsanywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search?location=${locationSearched}`,
       {
@@ -59,26 +59,6 @@ export const getBusinessesFromApi = (
     console.error('error in setBusinesses thunk', err)
   }
 }
-
-// getBusinessesFromApi = async (locationSearched) => {
-//   this.setState({loading: true})
-
-//     .then((res) => {
-//       this.setState({
-//         results: res.data.businesses,
-//         loading: false,
-//         firstLatitude: res.data.businesses[0].coordinates.latitude,
-//         firstLongitude: res.data.businesses[0].coordinates.longitude,
-//       })
-//     })
-//     .catch((error) => {
-//       console.log(error.response)
-//       this.setState({
-//         errorState: `Sorry we coudln't find information related to the location you search, do you want to try something else?`,
-//         loading: false,
-//       })
-//     })
-// }
 
 export default function(state = [], action) {
   switch (action.type) {

@@ -1,10 +1,10 @@
 import React from 'react'
 import mapboxgl from 'mapbox-gl'
 import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions'
-import {businesses, geojson} from '../../dummyData/businesses'
+// import {businesses, geojson} from '../../dummyData/businesses'
 import {getBusinessesFromApi} from '../store/businesses'
+import {fetchCrimesFromApi} from '../store/crimes'
 import {connect} from 'react-redux'
-import ReactMapGL, {Source, Layer} from 'react-mapbox-gl'
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoicmFmYWVsYW5kcmVzNTQiLCJhIjoiY2todXR1enlqMDltYjJxbWw4dnp4aDZrYyJ9.rP9cSw3nVs_ysNYCemYwKw'
@@ -51,13 +51,19 @@ class MapBox extends React.Component {
       this.setState({geoAddress: geoAddress})
       await this.props.getBusinessesFromApi(geoAddress, 1612825200)
       this.props.businesses.forEach(business => {
-        const marker = new mapboxgl.Marker()
+        new mapboxgl.Marker()
           .setLngLat([
             business.coordinates.longitude,
             business.coordinates.latitude
           ])
           .addTo(map)
       })
+      await this.props.loadAllCrimes()
+      this.props.crimes[0].map(crime =>
+        new mapboxgl.Marker()
+          .setLngLat([crime.longitude, crime.latitude])
+          .addTo(map)
+      )
     })
 
     map.on('move', () => {
@@ -89,14 +95,14 @@ class MapBox extends React.Component {
     //   'source-layer': 'businesses-cusco',
     // })
 
-    const layerStyle = {
-      id: 'point',
-      type: 'circle',
-      paint: {
-        'circle-radius': 10,
-        'circle-color': '#007cbf'
-      }
-    }
+    // const layerStyle = {
+    //   id: 'point',
+    //   type: 'circle',
+    //   paint: {
+    //     'circle-radius': 10,
+    //     'circle-color': '#007cbf',
+    //   },
+    // }
   }
 
   // handleClick = () => {
@@ -108,6 +114,7 @@ class MapBox extends React.Component {
     return (
       // Populates map by referencing map's container property
       <div>
+        {/* <CrimesMap /> */}
         {/* <button onClick={this.handleClick}>business</button>
         <button onClick={this.handleClick}>crome</button> */}
         <div ref={el => (this.mapWrapper = el)} className="mapWrapper">
@@ -128,12 +135,14 @@ class MapBox extends React.Component {
 
 const mapState = state => {
   return {
-    businesses: state.businesses
+    businesses: state.businesses,
+    crimes: state.crimes
   }
 }
 
 const mapDispatch = dispatch => {
   return {
+    loadAllCrimes: () => dispatch(fetchCrimesFromApi()),
     getBusinessesFromApi: (inputAddress, hour) =>
       dispatch(getBusinessesFromApi(inputAddress, hour))
   }
