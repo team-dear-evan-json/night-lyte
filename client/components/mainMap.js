@@ -7,11 +7,10 @@ import {
   Marker,
   Popup,
   Circle,
-  Map
+  LayersControl
 } from 'react-leaflet'
 import axios from 'axios'
-import {getBusinessesFromApi} from '../store/businesses'
-import MapBox from './MapBox'
+import businesses, {getBusinessesFromApi} from '../store/businesses'
 
 class MainMap extends React.Component {
   constructor(props) {
@@ -40,11 +39,25 @@ class MainMap extends React.Component {
   }
 
   render() {
-    // let businessResults = this.state.results
-    // console.log('Long and lat results: ', [
-    //   this.state.firstLatitude,
-    //   this.state.firstLongitude,
-    // ])
+    businesses = this.props.businesses.map(business => {
+      return (
+        <Circle
+          key={business.id}
+          center={[
+            business.coordinates.latitude,
+            business.coordinates.longitude
+          ]}
+          radius={18}
+          stroke={false}
+          // color="#E9C37B"
+          fill={true}
+          fillColor="#E9C37B"
+          fillOpacity={0.8}
+        >
+          <Popup>{business.name}</Popup>
+        </Circle>
+      )
+    })
     return (
       <div>
         <Map
@@ -53,30 +66,15 @@ class MainMap extends React.Component {
           zoom={12}
           scrollWheelZoom={false}
         >
-          <TileLayer
-            url="https://api.mapbox.com/styles/v1/kamalt/ckkoarmdr0uxx17qq5qysvnnl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoia2FtYWx0IiwiYSI6ImNra2tpc2NsdjBjZmcycG9jY21qYWF4MncifQ.Ri_912i2-6xSua8DSQZnZA"
-            attribution="Map data &copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors, <a href=&quot;https://creativecommons.org/licenses/by-sa/2.0/&quot;>CC-BY-SA</a>, Imagery &copy; <a href=&quot;https://www.mapbox.com/&quot;>Mapbox</a>"
-          />
-          <MapBox />
-          {this.props.businesses.map(business => {
-            return (
-              <Circle
-                key={business.id}
-                center={[
-                  business.coordinates.latitude,
-                  business.coordinates.longitude
-                ]}
-                radius={18}
-                stroke={false}
-                // color="#E9C37B"
-                fill={true}
-                fillColor="#E9C37B"
-                fillOpacity={0.8}
-              >
-                <Popup>{business.name}</Popup>
-              </Circle>
-            )
-          })}
+          <LayersControl position="topleft">
+            <LayersControl.BaseLayer checked name="Open businesses">
+              <TileLayer
+                url="https://api.mapbox.com/styles/v1/kamalt/ckkoarmdr0uxx17qq5qysvnnl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoia2FtYWx0IiwiYSI6ImNra2tpc2NsdjBjZmcycG9jY21qYWF4MncifQ.Ri_912i2-6xSua8DSQZnZA"
+                attribution="Map data &copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors, <a href=&quot;https://creativecommons.org/licenses/by-sa/2.0/&quot;>CC-BY-SA</a>, Imagery &copy; <a href=&quot;https://www.mapbox.com/&quot;>Mapbox</a>"
+              />
+            </LayersControl.BaseLayer>
+            {businesses}
+          </LayersControl>
         </Map>
       </div>
     )
