@@ -75,6 +75,9 @@ class MapBox extends React.Component {
         paint: {
           'circle-radius': 6,
           'circle-color': '#B42222'
+        },
+        layout: {
+          visibility: 'none'
         }
       })
     })
@@ -113,7 +116,6 @@ class MapBox extends React.Component {
           'circle-color': '#E9C37B',
           'circle-opacity': 0.6
         }
-        // filter: ['==', '$type', 'Point'],
       })
 
       // this.props.businesses.forEach(business => {
@@ -140,7 +142,12 @@ class MapBox extends React.Component {
 
       const link = document.createElement('a')
       link.href = '#'
-      link.className = ''
+      if (id === 'Open Businesses') {
+        link.className = 'active'
+      } else {
+        link.className = ''
+      }
+      // link.className = 'active'
       link.textContent = id
 
       link.onclick = function(e) {
