@@ -9,10 +9,6 @@ export const getBusinessesFromApi = (
   hour
 ) => async dispatch => {
   try {
-    let total = 0
-    let offset = 51
-    const allData = []
-
     const {data} = await axios.get(
       `${'https://corsanywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search?location=${locationSearched}`,
       {
@@ -28,10 +24,8 @@ export const getBusinessesFromApi = (
         }
       }
     )
-    allData.push(...data.businesses)
-    total = data.total
 
-    dispatch(setBusinesses(allData))
+    dispatch(setBusinesses(data.businesses))
   } catch (err) {
     console.error('error in setBusinesses thunk', err)
   }
