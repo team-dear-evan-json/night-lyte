@@ -20,8 +20,8 @@ form div {
   width: 100%;
   height: 90vh;
 }
-/*  Navbar */
 
+/*  Navbar */
 #nav-container {
   width: 100%;
   background: #191a1a;
@@ -55,7 +55,7 @@ nav a {
   height: 100vh;
 }
 
-/* mapboxgl- */
+/* mapboxgl-lnglatzoomaddy overlay */
 .sidebarStyle {
   display: inline-block;
   position: absolute;
@@ -69,69 +69,12 @@ nav a {
   font-weight: bold;
 }
 
-/* mapboxgl- MARKERS*/
-
-/* 1st combination */
-/* .mapboxgl-marker {
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  border: 1px solid gray;
-  background-color: yellow;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  border: 1px solid gray;
-  background-color: lightblue;
-} */
-
-/* 2nd combination */
-/* .mapboxgl-marker {
-  background-image: url('images/icon.png');
+/* mapboxgl-MARKERS*/
+.businessMarker {
+  background-image: url('images/yellow_orb.svg');
   background-size: cover;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  opacity: 0.8;
-  z-index: 1;
-} */
-
-/* .marker {
-  background-image: url('images/icon.png');
-  background-size: cover;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  opacity: 0.8;
-} */
-
-.businessMarkerWrapper {
-  background-image: url('images/icon.png');
-  background-size: cover;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  opacity: 0.8;
+  /* opacity: 0.8; */
 }
-
-/* CUSTOM MARKERS TROUBLESHOOTING!!!! */
-
-/* .markerWrapper {
-  background-image: url('images/icon.png');
-  background-size: cover;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  opacity: 0.8;
-} */
-
-/* .test-marker {
-  background-image: url('images/icon.png');
-  background-size: cover;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  opacity: 0.8;
-} */
-
-/* ------------------------------ */

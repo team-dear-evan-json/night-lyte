@@ -44,20 +44,17 @@ class MapBox extends React.Component {
     // Integrates directions control with map
     map.addControl(directions, 'top-right')
 
-    // --- MARKER TEST ----
-    const businessMarker = new mapboxgl.Marker({
-      element: this.businessMarkerWrapper
-    })
-    // --------------------
-
+    // Creates Search result listner and saves input address to state
     geocoder.on('result', async ({result}) => {
       const geoAddress = result.place_name
       this.setState({geoAddress: geoAddress})
+
+      // Makes a marker for each business and adds to map
       await this.props.getBusinessesFromApi(geoAddress, 1612825200)
       this.props.businesses.forEach(business => {
-        // --- MARKER TEST ----
-        businessMarker
-          // --------------------
+        const businessMarker = document.createElement('div')
+        businessMarker.className = 'businessMarker'
+        new mapboxgl.Marker(businessMarker)
           .setLngLat([
             business.coordinates.longitude,
             business.coordinates.latitude
@@ -73,42 +70,12 @@ class MapBox extends React.Component {
         zoom: map.getZoom().toFixed(2)
       })
     })
-
-    // --- MARKER TEST ----
-    //Works!!
-    // const marker = new mapboxgl.Marker({
-    //   element: this.businessMarkerWrapper,
-    // })
-    //   .setLngLat([-74.00934, 40.70531])
-    //   .addTo(map)
-
-    //Attempt 1:
-    // const element = document.createElement('div')
-    // element.className = 'test-marker'
-    // console.log(`>>>>`, typeof elmemt)
-    // element.style.backgroundImage = 'url(images/icon.png)'
-    // new mapboxgl.Marker(element).setLngLat([-74.00934, 40.70531]).addTo(map)
-
-    //Attempt 2:
-    // new mapboxgl.Marker({
-    //   element: <img className="icon" src='../images/icon.png' />
-    // }).setLngLat([-74.00934, 40.70531]).addTo(map)
-
-    // Attempt 3:
-
-    // --------------------
   }
   render() {
     return (
       // Populates map by referencing map's container property
       <div>
         <div ref={el => (this.mapWrapper = el)} className="mapWrapper" />
-        {/* --- MARKER TEST ---- */}
-        <div
-          ref={el => (this.businessMarkerWrapper = el)}
-          className="businessMarkerWrapper"
-        />
-        {/* -------------------- */}
         <div className="sidebarStyle">
           <div>
             page: /markers | Longitude: {this.state.lng} | Latitude:{' '}
