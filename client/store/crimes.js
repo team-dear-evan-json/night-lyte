@@ -17,7 +17,7 @@ const getCrimes = crimes => ({type: GET_CRIMES, crimes})
  * THUNK CREATORS
  */
 
-export const fetchCrimesFromApi = () => async dispatch => {
+export const fetchCrimesFromApi = coords => async dispatch => {
   const config = {
     method: 'GET',
     body: JSON.stringify({
@@ -31,7 +31,7 @@ export const fetchCrimesFromApi = () => async dispatch => {
 
   try {
     const res = await axios.get(
-      `https://data.cityofnewyork.us/resource/qsur-nxze.json?$limit=50`,
+      `https://data.cityofnewyork.us/resource/qsur-nxze.json?$where=within_circle(geocoded_column, ${coords},300)`,
       config
     )
     dispatch(getCrimes(res.data || defaultCrimes))
