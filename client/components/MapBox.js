@@ -7,20 +7,7 @@ import {fetchCrimesFromApi} from '../store/crimes'
 import {connect} from 'react-redux'
 import Slider from './Slider'
 
-function arrayToGeoJson(array) {
-  return array.map(element => {
-    return {
-      type: 'Feature',
-      geometry: {
-        coordinates: [
-          element.coordinates.longitude,
-          element.coordinates.latitude
-        ],
-        type: 'Point'
-      }
-    }
-  })
-}
+function arrayToGeoJson(array) {}
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoicmFmYWVsYW5kcmVzNTQiLCJhIjoiY2todXR1enlqMDltYjJxbWw4dnp4aDZrYyJ9.rP9cSw3nVs_ysNYCemYwKw'
@@ -62,29 +49,71 @@ class MapBox extends React.Component {
     // Integrates directions control with map
     map.addControl(directions, 'top-right')
 
+    map.on('load', async () => {
+      //create crime layer
+      await this.props.loadAllCrimes()
+      const crimesGeoJson = this.props.crimes[0].map(element => {
+        return {
+          type: 'Feature',
+          geometry: {
+            coordinates: [Number(element.longitude), Number(element.latitude)],
+            type: 'Point'
+          }
+        }
+      })
+      map.addSource('crime', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: crimesGeoJson
+        }
+      })
+      map.addLayer({
+        id: 'Crimes',
+        type: 'circle',
+        source: 'crime',
+        paint: {
+          'circle-radius': 6,
+          'circle-color': '#B42222'
+        }
+      })
+    })
+
     geocoder.on('result', async ({result}) => {
       const geoAddress = result.place_name
       this.setState({geoAddress: geoAddress})
+
+      //create yelp layer
       await this.props.getBusinessesFromApi(geoAddress, 1612825200)
-      await this.props.loadAllCrimes()
-      console.log('the crimes:', this.props.crimes)
-      const yelpFromGeoJsonCreator = arrayToGeoJson(this.props.businesses)
+      const yelpGeoJson = this.props.businesses.map(element => {
+        return {
+          type: 'Feature',
+          geometry: {
+            coordinates: [
+              element.coordinates.longitude,
+              element.coordinates.latitude
+            ],
+            type: 'Point'
+          }
+        }
+      })
       map.addSource('yelp', {
         type: 'geojson',
         data: {
           type: 'FeatureCollection',
-          features: yelpFromGeoJsonCreator
+          features: yelpGeoJson
         }
       })
       map.addLayer({
-        id: 'yelp',
+        id: 'Open Businesses',
         type: 'circle',
         source: 'yelp',
         paint: {
-          'circle-radius': 6,
-          'circle-color': '#B42222'
-        },
-        filter: ['==', '$type', 'Point']
+          'circle-radius': 18,
+          'circle-color': '#E9C37B',
+          'circle-opacity': 0.6
+        }
+        // filter: ['==', '$type', 'Point'],
       })
 
       // this.props.businesses.forEach(business => {
@@ -102,7 +131,38 @@ class MapBox extends React.Component {
       //     .addTo(map)
       // )
     })
+    // enumerate ids of the layers
+    const toggleableLayerIds = ['Open Businesses', 'Crimes']
 
+    // set up the corresponding toggle button for each layer
+    for (let i = 0; i < toggleableLayerIds.length; i++) {
+      const id = toggleableLayerIds[i]
+
+      const link = document.createElement('a')
+      link.href = '#'
+      link.className = ''
+      link.textContent = id
+
+      link.onclick = function(e) {
+        const clickedLayer = this.textContent
+        e.preventDefault()
+        e.stopPropagation()
+
+        const visibility = map.getLayoutProperty(clickedLayer, 'visibility')
+
+        // toggle layer visibility by changing the layout object's visibility property
+        if (visibility === 'visible') {
+          map.setLayoutProperty(clickedLayer, 'visibility', 'none')
+          this.className = ''
+        } else {
+          this.className = 'active'
+          map.setLayoutProperty(clickedLayer, 'visibility', 'visible')
+        }
+      }
+
+      const layers = document.getElementById('menu')
+      layers.appendChild(link)
+    }
     map.on('move', () => {
       this.setState({
         lng: map.getCenter().lng.toFixed(6),
@@ -151,6 +211,7 @@ class MapBox extends React.Component {
     return (
       // Populates map by referencing map's container property
       <div>
+        <div id="menu" />
         <Slider />
         {/* <CrimesMap /> */}
         {/* <button onClick={this.handleClick}>business</button>
