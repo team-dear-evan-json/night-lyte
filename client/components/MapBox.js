@@ -5,6 +5,7 @@ import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-direct
 import {getBusinessesFromApi} from '../store/businesses'
 import {fetchCrimesFromApi} from '../store/crimes'
 import {connect} from 'react-redux'
+import Slider from './Slider'
 
 function arrayToGeoJson(array) {
   return array.map(element => {
@@ -150,18 +151,16 @@ class MapBox extends React.Component {
     return (
       // Populates map by referencing map's container property
       <div>
+        <Slider />
         {/* <CrimesMap /> */}
         {/* <button onClick={this.handleClick}>business</button>
         <button onClick={this.handleClick}>crome</button> */}
-        <div ref={el => (this.mapWrapper = el)} className="mapWrapper">
-          <div className="sidebarStyle">
-            <div>
-              {/* <Layer type="symbol" layout={{'icon-image': 'harbor-15'}}> */}
-              Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom:{' '}
-              {this.state.zoom} | geoAddress:
-              {this.state.geoAddress}
-              {/* </Layer> */}
-            </div>
+        <div ref={el => (this.mapWrapper = el)} className="mapWrapper" />
+        <div className="sidebarStyle">
+          <div>
+            Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom:{' '}
+            {this.state.zoom} | Address:
+            {this.state.geoAddress}
           </div>
         </div>
       </div>
