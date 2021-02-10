@@ -1,8 +1,9 @@
 import React from 'react'
 import mapboxgl from 'mapbox-gl'
 import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions'
-import {businesses, geojson} from '../../dummyData/businesses'
+// import {businesses, geojson} from '../../dummyData/businesses'
 import {getBusinessesFromApi} from '../store/businesses'
+import {fetchCrimesFromApi} from '../store/crimes'
 import {connect} from 'react-redux'
 // import ReactMapGL, {Source, Layer} from 'react-mapbox-gl'
 
@@ -44,9 +45,10 @@ class MapBox extends React.Component {
     // Integrates directions control with map
     map.addControl(directions, 'top-right')
 
-    // Creates Search result listner and saves input address to state
+    // SEARCH FIELD: Creates Search result listner and saves input address to state
     geocoder.on('result', async ({result}) => {
       const geoAddress = result.place_name
+      const geoCoords = result.geometry.coordinates
       this.setState({geoAddress: geoAddress})
 
       // Makes a marker for each business and adds to map
@@ -59,6 +61,17 @@ class MapBox extends React.Component {
             business.coordinates.longitude,
             business.coordinates.latitude
           ])
+          .addTo(map)
+      })
+
+      // Makes a maker for each crime and adds to map
+      const crimeCoords = `${geoCoords[1]}, ${geoCoords[0]}`
+      await this.props.loadAllCrimes(crimeCoords)
+      this.props.crimes[0].map(crime => {
+        const crimeMarker = document.createElement('div')
+        crimeMarker.className = 'crimeMarker'
+        new mapboxgl.Marker(crimeMarker)
+          .setLngLat([crime.longitude, crime.latitude])
           .addTo(map)
       })
     })
@@ -90,12 +103,14 @@ class MapBox extends React.Component {
 
 const mapState = state => {
   return {
-    businesses: state.businesses
+    businesses: state.businesses,
+    crimes: state.crimes
   }
 }
 
 const mapDispatch = dispatch => {
   return {
+    loadAllCrimes: coords => dispatch(fetchCrimesFromApi(coords)),
     getBusinessesFromApi: (inputAddress, hour) =>
       dispatch(getBusinessesFromApi(inputAddress, hour))
   }

@@ -5,6 +5,7 @@ import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-direct
 import {getBusinessesFromApi} from '../store/businesses'
 import {fetchCrimesFromApi} from '../store/crimes'
 import {connect} from 'react-redux'
+// import ReactMapGL, {Source, Layer} from 'react-mapbox-gl'
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoicmFmYWVsYW5kcmVzNTQiLCJhIjoiY2todXR1enlqMDltYjJxbWw4dnp4aDZrYyJ9.rP9cSw3nVs_ysNYCemYwKw'
@@ -13,11 +14,10 @@ class MapBox extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      longitude: -122.45,
-      latitude: 37.78,
+      longitude: -73.94062,
+      latitude: 40.73308,
       zoom: 14,
       geoAddress: ''
-      // visibility: 'visible',
     }
   }
 
@@ -26,7 +26,7 @@ class MapBox extends React.Component {
     const map = new mapboxgl.Map({
       container: this.mapWrapper,
       style: 'mapbox://styles/mapbox/dark-v10',
-      center: [-73.985664, 40.748514],
+      center: [-73.94062, 40.73308],
       zoom: 12
     })
     // Creates a geo search control
@@ -34,7 +34,6 @@ class MapBox extends React.Component {
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl
     })
-
     map.addControl(geocoder, 'top-right')
 
     // Creates new directions control instance
@@ -46,24 +45,35 @@ class MapBox extends React.Component {
     // Integrates directions control with map
     map.addControl(directions, 'top-right')
 
+    // SEARCH FIELD: Creates Search result listner and saves input address to state
     geocoder.on('result', async ({result}) => {
       const geoAddress = result.place_name
+      const geoCoords = result.geometry.coordinates
       this.setState({geoAddress: geoAddress})
+
+      // Makes a marker for each business and adds to map
       await this.props.getBusinessesFromApi(geoAddress, 1612825200)
       this.props.businesses.forEach(business => {
-        new mapboxgl.Marker()
+        const businessMarker = document.createElement('div')
+        businessMarker.className = 'businessMarker'
+        new mapboxgl.Marker(businessMarker)
           .setLngLat([
             business.coordinates.longitude,
             business.coordinates.latitude
           ])
           .addTo(map)
       })
-      await this.props.loadAllCrimes()
-      this.props.crimes[0].map(crime =>
-        new mapboxgl.Marker()
+
+      // Makes a maker for each crime and adds to map
+      const crimeCoords = `${geoCoords[1]}, ${geoCoords[0]}`
+      await this.props.loadAllCrimes(crimeCoords)
+      this.props.crimes[0].map(crime => {
+        const crimeMarker = document.createElement('div')
+        crimeMarker.className = 'crimeMarker'
+        new mapboxgl.Marker(crimeMarker)
           .setLngLat([crime.longitude, crime.latitude])
           .addTo(map)
-      )
+      })
     })
 
     map.on('move', () => {
@@ -73,59 +83,17 @@ class MapBox extends React.Component {
         zoom: map.getZoom().toFixed(2)
       })
     })
-
-    // // Adds layer
-    // map.addSource('businesses', {
-    //   type: 'vector',
-    //   url: 'mapbox://mapbox.2opop9hr',
-    // })
-
-    // map.addLayer({
-    //   id: 'businesses',
-    //   type: 'circle',
-    //   source: 'businesses',
-    //   layout: {
-    //     // make layer visible by default
-    //     visibility: this.state.visibility,
-    //   },
-    //   paint: {
-    //     'circle-radius': 8,
-    //     'circle-color': 'rgba(55,148,179,1)',
-    //   },
-    //   'source-layer': 'businesses-cusco',
-    // })
-
-    // const layerStyle = {
-    //   id: 'point',
-    //   type: 'circle',
-    //   paint: {
-    //     'circle-radius': 10,
-    //     'circle-color': '#007cbf',
-    //   },
-    // }
   }
-
-  // handleClick = () => {
-  //   //   // toggle visibility based on type
-  //   this.setState({visibility: !this.state.visibility}) // use setLayoutProperty
-  // }
-
   render() {
     return (
       // Populates map by referencing map's container property
       <div>
-        {/* <CrimesMap /> */}
-        {/* <button onClick={this.handleClick}>business</button>
-        <button onClick={this.handleClick}>crome</button> */}
-        <div ref={el => (this.mapWrapper = el)} className="mapWrapper">
-          <div className="sidebarStyle">
-            <div>
-              {/* <Layer type="symbol" layout={{'icon-image': 'harbor-15'}}> */}
-              Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom:{' '}
-              {this.state.zoom} | geoAddress:
-              {this.state.geoAddress}
-              {/* </Layer> */}
-            </div>
+        <div ref={el => (this.mapWrapper = el)} className="mapWrapper" />
+        <div className="sidebarStyle">
+          <div>
+            {/* page: / | Longitude: {this.state.lng} | Latitude:{' '}
+            {this.state.lat} | Zoom: {this.state.zoom} | Address:
+            {this.state.geoAddress} */}
           </div>
         </div>
       </div>
@@ -142,7 +110,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    loadAllCrimes: () => dispatch(fetchCrimesFromApi()),
+    loadAllCrimes: coords => dispatch(fetchCrimesFromApi(coords)),
     getBusinessesFromApi: (inputAddress, hour) =>
       dispatch(getBusinessesFromApi(inputAddress, hour))
   }
