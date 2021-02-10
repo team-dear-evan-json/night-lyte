@@ -65,18 +65,9 @@ class MapBox extends React.Component {
       const geoAddress = result.place_name
       this.setState({geoAddress: geoAddress})
       await this.props.getBusinessesFromApi(geoAddress, 1612825200)
-      // const yelpGeoJson = arrayToGeoJson(this.props.businesses, 'Point')
-      // console.log(yelpGeoJson)
-      const allCoordinates = []
+      await this.props.loadAllCrimes()
+      console.log('the crimes:', this.props.crimes)
       const yelpFromGeoJsonCreator = arrayToGeoJson(this.props.businesses)
-      this.props.businesses.forEach(element => {
-        allCoordinates.push([
-          element.coordinates.longitude,
-          element.coordinates.latitude
-        ])
-      })
-      console.log('geoJsonOutput:', yelpFromGeoJsonCreator)
-      console.log('allCoords', allCoordinates)
       map.addSource('yelp', {
         type: 'geojson',
         data: {
@@ -94,42 +85,21 @@ class MapBox extends React.Component {
         },
         filter: ['==', '$type', 'Point']
       })
-      // map.addSource('yelpBusinesses', yelpGeoJson)
-      // console.log('up to here')
-      // const yelpSource = map.getSource('yelpBusinesses')
-      // console.log('yelpSource', JSON.stringify(yelpSource))
-      // map.addLayer({
-      //   id: 'park-volcanoes',
-      //   type: 'circle',
-      //   source: 'yelpBusinesses',
-      //   paint: {
-      //     'circle-radius': 6,
-      //     'circle-color': '#B42222',
-      //   },
-      //   // filter: ['==', '$type', 'Point'],
-      // })
-      // this.props.businesses.forEach((business) => {
-      //   const marker = new mapboxgl.Marker()
+
+      // this.props.businesses.forEach(business => {
+      //   new mapboxgl.Marker()
       //     .setLngLat([
       //       business.coordinates.longitude,
-      //       business.coordinates.latitude,
+      //       business.coordinates.latitude
       //     ])
       //     .addTo(map)
       // })
-      this.props.businesses.forEach(business => {
-        new mapboxgl.Marker()
-          .setLngLat([
-            business.coordinates.longitude,
-            business.coordinates.latitude
-          ])
-          .addTo(map)
-      })
-      await this.props.loadAllCrimes()
-      this.props.crimes[0].map(crime =>
-        new mapboxgl.Marker()
-          .setLngLat([crime.longitude, crime.latitude])
-          .addTo(map)
-      )
+      // await this.props.loadAllCrimes()
+      // this.props.crimes[0].map(crime =>
+      //   new mapboxgl.Marker()
+      //     .setLngLat([crime.longitude, crime.latitude])
+      //     .addTo(map)
+      // )
     })
 
     map.on('move', () => {
