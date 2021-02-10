@@ -2,10 +2,17 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, MainMap, MainMapDummy} from './components'
+import {
+  Login,
+  Signup,
+  UserHome,
+  MainMap,
+  MainMapDummy,
+  CrimesMap
+} from './components'
 import {me} from './store'
-import HomePage from './components/HomePage'
-import LeafletMap from './components/LeafletMap'
+// import HomePage from './components/HomePage'
+// import LeafletMap from './components/LeafletMap'
 import MapBox from './components/MapBox'
 import TestMapBox from './components/TestMapBox'
 
@@ -26,9 +33,10 @@ class Routes extends Component {
         <Route path="/markers" component={TestMapBox} />
         <Route path="/test" component={MainMapDummy} />
         <Route path="/testingAPI" component={MainMap} />
+        <Route exact path="/crimes" component={CrimesMap} />
         <Route exact path="/" component={MapBox} />
         {/* <Route path="/nav" exact component={MapBox} /> */}
-
+        {/* <Route path="/nav" exact component={LeafletMap} /> */}
         {/* Routes placed here are available to all visitors */}
         {/* <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
