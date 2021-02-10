@@ -4,8 +4,9 @@ import thunkMiddleware from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import user from './user'
 import businesses from './businesses'
+import crimes from './crimes'
 
-const reducer = combineReducers({user, businesses})
+const reducer = combineReducers({user, businesses, crimes})
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
