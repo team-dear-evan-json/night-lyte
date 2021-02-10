@@ -6,6 +6,21 @@ import {getBusinessesFromApi} from '../store/businesses'
 import {connect} from 'react-redux'
 // import ReactMapGL, {Source, Layer} from 'react-mapbox-gl'
 
+function arrayToGeoJson(array) {
+  return array.map(element => {
+    return {
+      type: 'Feature',
+      geometry: {
+        coordinates: [
+          element.coordinates.longitude,
+          element.coordinates.latitude
+        ],
+        type: 'Point'
+      }
+    }
+  })
+}
+
 mapboxgl.accessToken =
   'pk.eyJ1IjoicmFmYWVsYW5kcmVzNTQiLCJhIjoiY2todXR1enlqMDltYjJxbWw4dnp4aDZrYyJ9.rP9cSw3nVs_ysNYCemYwKw'
 
@@ -48,14 +63,57 @@ class MapBox extends React.Component {
       const geoAddress = result.place_name
       this.setState({geoAddress: geoAddress})
       await this.props.getBusinessesFromApi(geoAddress, 1612825200)
-      this.props.businesses.forEach(business => {
-        const marker = new mapboxgl.Marker()
-          .setLngLat([
-            business.coordinates.longitude,
-            business.coordinates.latitude
-          ])
-          .addTo(map)
+      // const yelpGeoJson = arrayToGeoJson(this.props.businesses, 'Point')
+      // console.log(yelpGeoJson)
+      const allCoordinates = []
+      const yelpFromGeoJsonCreator = arrayToGeoJson(this.props.businesses)
+      this.props.businesses.forEach(element => {
+        allCoordinates.push([
+          element.coordinates.longitude,
+          element.coordinates.latitude
+        ])
       })
+      console.log('geoJsonOutput:', yelpFromGeoJsonCreator)
+      console.log('allCoords', allCoordinates)
+      map.addSource('yelp', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: yelpFromGeoJsonCreator
+        }
+      })
+      map.addLayer({
+        id: 'yelp',
+        type: 'circle',
+        source: 'yelp',
+        paint: {
+          'circle-radius': 6,
+          'circle-color': '#B42222'
+        },
+        filter: ['==', '$type', 'Point']
+      })
+      // map.addSource('yelpBusinesses', yelpGeoJson)
+      // console.log('up to here')
+      // const yelpSource = map.getSource('yelpBusinesses')
+      // console.log('yelpSource', JSON.stringify(yelpSource))
+      // map.addLayer({
+      //   id: 'park-volcanoes',
+      //   type: 'circle',
+      //   source: 'yelpBusinesses',
+      //   paint: {
+      //     'circle-radius': 6,
+      //     'circle-color': '#B42222',
+      //   },
+      //   // filter: ['==', '$type', 'Point'],
+      // })
+      // this.props.businesses.forEach((business) => {
+      //   const marker = new mapboxgl.Marker()
+      //     .setLngLat([
+      //       business.coordinates.longitude,
+      //       business.coordinates.latitude,
+      //     ])
+      //     .addTo(map)
+      // })
     })
 
     map.on('move', () => {
