@@ -30,29 +30,6 @@ export const getBusinessesFromApi = (
     )
     allData.push(...data.businesses)
     total = data.total
-    // center = [data.region.center.lat, ata.region.center.lng]
-
-    // while (total > 0) {
-    //   const {data} = await axios.get(
-    //     `${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search?location=${locationSearched}`,
-    //     {
-    //       headers: {
-    //         accept: 'application/json',
-    //         'x-requested-with': 'xmlhttprequest',
-    //         'Access-Control-Allow-Origin': '*',
-    //         Authorization: `Bearer d7me82kfWORLA8U70CIdJzgNKTCzhv-aHEjhB7KNtggEeusVZublUF0AhHlaWsNhzoIfv9KJRPUy7wsK4KglKy2_7BRwVoG1UaRfpEBIz-rjnGM04210jy0hXj0YYHYx`,
-    //       },
-    //       params: {
-    //         limit: 50,
-    //         offset: offset,
-    //         open_at: hour,
-    //       },
-    //     }
-    //   )
-    //   allData.push(...data.businesses)
-    //   total -= 50
-    //   offset += 50
-    // }
 
     dispatch(setBusinesses(allData))
   } catch (err) {

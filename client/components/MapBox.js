@@ -1,8 +1,11 @@
 import React from 'react'
 import mapboxgl from 'mapbox-gl'
-import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions'
+import MapboxDirections, {
+  setOriginFromCoordinates
+} from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions'
 // import {businesses, geojson} from '../../dummyData/businesses'
 import {getBusinessesFromApi} from '../store/businesses'
+import {fetchEntrancesFromApi} from '../store/entrances'
 import {fetchCrimesFromApi} from '../store/crimes'
 import {connect} from 'react-redux'
 
@@ -49,21 +52,135 @@ class MapBox extends React.Component {
     geocoder.on('result', async ({result}) => {
       const geoAddress = result.place_name
       this.setState({geoAddress: geoAddress})
+
+      // await this.props.getBusinessesFromApi(geoAddress, 1612825200)
+      // this.props.businesses.forEach((business) => {
+      //   new mapboxgl.Marker()
+      //     .setLngLat([
+      //       business.coordinates.longitude,
+      //       business.coordinates.latitude,
+      //     ])
+      //     .addTo(map)
+      // })
+
       await this.props.getBusinessesFromApi(geoAddress, 1612825200)
-      this.props.businesses.forEach(business => {
-        new mapboxgl.Marker()
-          .setLngLat([
-            business.coordinates.longitude,
-            business.coordinates.latitude
-          ])
-          .addTo(map)
+      const yelpGeoJson = this.props.businesses.map(business => {
+        return {
+          type: 'Feature',
+          geometry: {
+            coordinates: [
+              business.coordinates.longitude,
+              business.coordinates.latitude
+            ],
+            type: 'Point'
+          }
+        }
       })
+      map.addSource('yelp', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: yelpGeoJson
+        }
+      })
+      map.addLayer({
+        id: 'Open Businesses',
+        type: 'circle',
+        source: 'yelp',
+        layout: {
+          // make layer visible by default
+          visibility: 'visible'
+        },
+        paint: {
+          'circle-radius': 8,
+          'circle-color': '#E9C37B',
+          'circle-opacity': 0.6
+        }
+      })
+
+      // await this.props.loadAllCrimes()
+      // this.props.crimes[0].map((crime) =>
+      //   new mapboxgl.Marker()
+      //     .setLngLat([crime.longitude, crime.latitude])
+      //     .addTo(map)
+      // )
+
       await this.props.loadAllCrimes()
-      this.props.crimes[0].map(crime =>
-        new mapboxgl.Marker()
-          .setLngLat([crime.longitude, crime.latitude])
-          .addTo(map)
-      )
+      const crimesGeoJson = this.props.crimes[0].map(crime => {
+        return {
+          type: 'Feature',
+          geometry: {
+            coordinates: [crime.longitude, crime.latitude],
+            type: 'Point'
+          }
+        }
+      })
+      map.addSource('crimedata', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: crimesGeoJson
+        }
+      })
+      map.addLayer({
+        id: 'Crime Cases',
+        type: 'circle',
+        source: 'crimedata',
+        layout: {
+          // make layer visible by default
+          visibility: 'visible'
+        },
+        paint: {
+          'circle-radius': 8,
+          'circle-color': 'red',
+          'circle-opacity': 1.0
+        }
+      })
+
+      // await this.props.loadEntrances()
+      // this.props.entrances[0].map((entrance) =>
+      //   new mapboxgl.Marker()
+      //     .setLngLat([
+      //       entrance.the_geom.coordinates[0],
+      //       entrance.the_geom.coordinates[1],
+      //     ])
+      //     .addTo(map)
+      // )
+
+      await this.props.loadEntrances()
+      const entrancesGeoJson = this.props.entrances[0].map(entrance => {
+        return {
+          type: 'Feature',
+          geometry: {
+            coordinates: [
+              entrance.the_geom.coordinates[0],
+              entrance.the_geom.coordinates[1]
+            ],
+            type: 'Point'
+          }
+        }
+      })
+      map.addSource('subwaydata', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: entrancesGeoJson
+        }
+      })
+      map.addLayer({
+        id: 'Subway Entrances',
+        type: 'circle',
+        source: 'subwaydata',
+        layout: {
+          // make layer visible by default
+          visibility: 'visible'
+        },
+        paint: {
+          'circle-radius': 8,
+          'circle-color': 'green',
+          'circle-opacity': 1.0
+        }
+      })
     })
 
     map.on('move', () => {
@@ -73,58 +190,17 @@ class MapBox extends React.Component {
         zoom: map.getZoom().toFixed(2)
       })
     })
-
-    // // Adds layer
-    // map.addSource('businesses', {
-    //   type: 'vector',
-    //   url: 'mapbox://mapbox.2opop9hr',
-    // })
-
-    // map.addLayer({
-    //   id: 'businesses',
-    //   type: 'circle',
-    //   source: 'businesses',
-    //   layout: {
-    //     // make layer visible by default
-    //     visibility: this.state.visibility,
-    //   },
-    //   paint: {
-    //     'circle-radius': 8,
-    //     'circle-color': 'rgba(55,148,179,1)',
-    //   },
-    //   'source-layer': 'businesses-cusco',
-    // })
-
-    // const layerStyle = {
-    //   id: 'point',
-    //   type: 'circle',
-    //   paint: {
-    //     'circle-radius': 10,
-    //     'circle-color': '#007cbf',
-    //   },
-    // }
   }
-
-  // handleClick = () => {
-  //   //   // toggle visibility based on type
-  //   this.setState({visibility: !this.state.visibility}) // use setLayoutProperty
-  // }
 
   render() {
     return (
-      // Populates map by referencing map's container property
       <div>
-        {/* <CrimesMap /> */}
-        {/* <button onClick={this.handleClick}>business</button>
-        <button onClick={this.handleClick}>crome</button> */}
         <div ref={el => (this.mapWrapper = el)} className="mapWrapper">
           <div className="sidebarStyle">
             <div>
-              {/* <Layer type="symbol" layout={{'icon-image': 'harbor-15'}}> */}
               Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom:{' '}
               {this.state.zoom} | geoAddress:
               {this.state.geoAddress}
-              {/* </Layer> */}
             </div>
           </div>
         </div>
@@ -136,12 +212,14 @@ class MapBox extends React.Component {
 const mapState = state => {
   return {
     businesses: state.businesses,
-    crimes: state.crimes
+    crimes: state.crimes,
+    entrances: state.entrances
   }
 }
 
 const mapDispatch = dispatch => {
   return {
+    loadEntrances: () => dispatch(fetchEntrancesFromApi()),
     loadAllCrimes: () => dispatch(fetchCrimesFromApi()),
     getBusinessesFromApi: (inputAddress, hour) =>
       dispatch(getBusinessesFromApi(inputAddress, hour))

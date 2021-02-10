@@ -5,8 +5,9 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import user from './user'
 import businesses from './businesses'
 import crimes from './crimes'
+import entrances from './entrances'
 
-const reducer = combineReducers({user, businesses, crimes})
+const reducer = combineReducers({user, businesses, crimes, entrances})
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
