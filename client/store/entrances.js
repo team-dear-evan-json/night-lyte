@@ -23,7 +23,7 @@ export const fetchEntrancesFromApi = coors => async dispatch => {
   }
   try {
     const res = await axios.get(
-      `https://data.cityofnewyork.us/resource/he7q-3hwy.json?$where=within_circle(the_geom, ${coors}, 500)`,
+      `https://data.cityofnewyork.us/resource/he7q-3hwy.json?$where=within_circle(the_geom, ${coors}, 1000)`,
       config
     )
     dispatch(getEntrances(res.data || defaultEntrances))
