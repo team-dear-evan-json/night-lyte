@@ -11,7 +11,7 @@ const getEntrances = entrances => ({type: GET_ENTRANCES, entrances})
 
 //Thunk
 
-export const fetchEntrancesFromApi = () => async dispatch => {
+export const fetchEntrancesFromApi = coors => async dispatch => {
   const config = {
     method: 'GET',
     body: JSON.stringify({
@@ -23,12 +23,12 @@ export const fetchEntrancesFromApi = () => async dispatch => {
   }
   try {
     const res = await axios.get(
-      `https://data.cityofnewyork.us/resource/he7q-3hwy.json?$limit=100`,
+      `https://data.cityofnewyork.us/resource/he7q-3hwy.json?$where=within_circle(the_geom, ${coors}, 500)`,
       config
     )
     dispatch(getEntrances(res.data || defaultEntrances))
   } catch (error) {
-    console.error('Error is get Entrances thunk', error)
+    console.error('Error is in get Entrances thunk', error)
   }
 }
 

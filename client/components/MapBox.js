@@ -54,6 +54,7 @@ class MapBox extends React.Component {
     geocoder.on('result', async ({result}) => {
       const geoAddress = result.place_name
       const geoCoords = result.geometry.coordinates
+      const geoCoors = result.geometry.coordinates
       this.setState({geoAddress: geoAddress})
 
       //create yelp layer
@@ -139,7 +140,7 @@ class MapBox extends React.Component {
         }
       })
       map.addLayer({
-        id: 'Crimes',
+        id: 'Crime cases',
         type: 'circle',
         source: 'crime',
         paint: {
@@ -150,10 +151,51 @@ class MapBox extends React.Component {
           visibility: 'none'
         }
       })
+
+      //create entrances layer
+
+      const entranceCoordinates = `${geoCoors[1]}, ${geoCoors[0]}`
+      await this.props.loadEntrances(entranceCoordinates)
+      const entranceGeoJson = this.props.entrances[0].map(entrance => {
+        return {
+          type: 'Feature',
+          geometry: {
+            coordinates: [
+              entrance.the_geom.coordinates[0],
+              entrance.the_geom.coordinates[1]
+            ],
+            type: 'Point'
+          }
+        }
+      })
+      map.addSource('entrance', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: entranceGeoJson
+        }
+      })
+      map.addLayer({
+        id: 'Subway entrances',
+        type: 'circle',
+        source: 'entrance',
+        paint: {
+          'circle-radius': 6,
+          'circle-color': 'green'
+        },
+        layout: {
+          visibility: 'none'
+        }
+      })
     })
+
     //Layers Filter
     // enumerate ids of the layers
-    const toggleableLayerIds = ['Open Businesses', 'Crimes']
+    const toggleableLayerIds = [
+      'Open Businesses',
+      'Crime cases',
+      'Subway entrances'
+    ]
 
     // set up the corresponding toggle button for each layer
     for (let i = 0; i < toggleableLayerIds.length; i++) {
@@ -202,9 +244,6 @@ class MapBox extends React.Component {
       <div>
         <div id="menu" />
         <Slider />
-        {/* <CrimesMap /> */}
-        {/* <button onClick={this.handleClick}>business</button>
-        <button onClick={this.handleClick}>crome</button> */}
         <div ref={el => (this.mapWrapper = el)} className="mapWrapper" />
         <div className="sidebarStyle">
           <div>
@@ -228,6 +267,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
+    loadEntrances: coors => dispatch(fetchEntrancesFromApi(coors)),
     loadAllCrimes: coords => dispatch(fetchCrimesFromApi(coords)),
     getBusinessesFromApi: (inputAddress, hour) =>
       dispatch(getBusinessesFromApi(inputAddress, hour))
