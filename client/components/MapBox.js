@@ -8,23 +8,26 @@ import {getBusinessesFromApi} from '../store/businesses'
 import {fetchEntrancesFromApi} from '../store/entrances'
 import {fetchCrimesFromApi} from '../store/crimes'
 import {connect} from 'react-redux'
-import Slider from './Slider'
+import SliderBar from './SliderBar'
 
 function arrayToGeoJson(array) {}
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoicmFmYWVsYW5kcmVzNTQiLCJhIjoiY2todXR1enlqMDltYjJxbWw4dnp4aDZrYyJ9.rP9cSw3nVs_ysNYCemYwKw'
 
+const defaultState = {
+  longitude: -122.45,
+  latitude: 37.78,
+  zoom: 14,
+  geoAddress: '',
+  hour: 1613102400
+}
+
 class MapBox extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      longitude: -122.45,
-      latitude: 37.78,
-      zoom: 14,
-      geoAddress: ''
-      // visibility: 'visible',
-    }
+    this.state = defaultState
+    this.changeHandler = this.changeHandler.bind(this)
   }
   async componentDidMount() {
     // Creates new map instance
@@ -58,7 +61,7 @@ class MapBox extends React.Component {
       this.setState({geoAddress: geoAddress})
 
       //create yelp layer
-      await this.props.getBusinessesFromApi(geoAddress, 1612825200)
+      await this.props.getBusinessesFromApi(geoAddress, this.state.hour)
       const yelpGeoJson = this.props.businesses.map(element => {
         return {
           type: 'Feature',
@@ -239,11 +242,40 @@ class MapBox extends React.Component {
     })
   }
 
+  async changeHandler(event) {
+    console.log('number: ', Number(event.target.value))
+    console.log('tyopeof: ', typeof Number(event.target.value))
+
+    if (Number(event.target.value) === 3) {
+      this.setState({
+        [event.target.name]: 1613199600
+      })
+    }
+    if (Number(event.target.value) === 2) {
+      this.setState({
+        [event.target.name]: 1613188800
+      })
+    }
+    if (Number(event.target.value) === 1) {
+      this.setState({
+        [event.target.name]: await parseInt(
+          (new Date().getTime() / 1000).toFixed(0)
+        )
+      })
+    }
+
+    await this.props.getBusinessesFromApi(
+      this.state.geoAddress,
+      this.state.hour
+    )
+    console.log(this.state.hour)
+  }
+
   render() {
     return (
       <div>
         <div id="menu" />
-        <Slider />
+        <SliderBar changeHandler={this.changeHandler} mapValues={this.state} />
         <div ref={el => (this.mapWrapper = el)} className="mapWrapper" />
         <div className="sidebarStyle">
           <div>
