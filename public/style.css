@@ -295,14 +295,26 @@ input.range::-ms-fill-upper {
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
-  background-position: bottom center;
+  background-position: top center;
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
 .story-content {
-  height: 60%;
+  height: 55%;
+  width: 43%;
+  min-width: 680px;
+  float: right;
+}
+
+.yellow-radial {
+  float: right;
+  background-color: #b9934d;
+  opacity: 0.8;
+  width: 100%;
+  height: 100%;
+  border-radius: 0px 0px 0px 650px;
 }
 
 .story-content h1 {
@@ -314,11 +326,12 @@ input.range::-ms-fill-upper {
   text-align: right;
 }
 
-.yellow-radial {
-  float: right;
-  background-color: #e9c37b;
-  opacity: 0.8;
-  width: 40%;
-  height: 60%;
-  border-radius: 0px 0px 0px 650px;
+.yellow-radial p {
+  margin: 0;
+  padding-right: 2em;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 25px;
+  text-align: right;
+  min-width: 680px;
 }
