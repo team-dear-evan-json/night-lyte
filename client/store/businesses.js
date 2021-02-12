@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {addLeadingSlash} from 'history/PathUtils'
 
 const SET_BUSINESSES = 'SET_BUSINESSES'
 
@@ -20,7 +21,8 @@ export const getBusinessesFromApi = (
         },
         params: {
           limit: 50,
-          open_at: hour
+          open_at: hour,
+          categories: 'food,nightlife,restaurants,cafes,shopping'
         }
       }
     )

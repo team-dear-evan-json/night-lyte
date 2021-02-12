@@ -59,7 +59,15 @@ class MapBox extends React.Component {
 
       //create yelp layer
       await this.props.getBusinessesFromApi(geoAddress, 1612825200)
-      const yelpGeoJson = this.props.businesses.map(element => {
+      // const filteredData = this.props.businesses.filter(function (business) {
+      //   return (
+      //     business.categories[0].alias !== 'landmarks' &&
+      //     business.categories[0].alias !== 'parks' &&
+      //     business.categories[0].alias !== 'amusementparks'
+      //   )
+      // })
+
+      const yelpGeoJson = this.props.businesses.map(function(element) {
         return {
           type: 'Feature',
           geometry: {
@@ -75,6 +83,7 @@ class MapBox extends React.Component {
           }
         }
       })
+
       map.addSource('yelp', {
         type: 'geojson',
         data: {
