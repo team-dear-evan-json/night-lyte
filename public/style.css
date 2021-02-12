@@ -305,3 +305,8 @@ input.range::-ms-fill-upper {
 #menu a.active:hover {
   background: #3074a4;
 }
+
+#clearButton {
+  position: absolute;
+  top: 10px;
+}
