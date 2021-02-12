@@ -1,6 +1,7 @@
 body {
   font-family: Zilla Slab, monospace;
   margin: auto;
+  font-size: 100%;
 }
 
 .app-div {
@@ -295,7 +296,7 @@ input.range::-ms-fill-upper {
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
-  background-position: top center;
+  background-position: center;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -317,13 +318,18 @@ input.range::-ms-fill-upper {
   border-radius: 0px 0px 0px 650px;
 }
 
-.story-content h1 {
+.yellow-radial h1 {
   margin: 0;
   padding: 1em;
   font-style: normal;
   font-weight: normal;
   line-height: 36px;
   text-align: right;
+  word-wrap: break-word;
+}
+
+span.quote {
+  white-space: pre;
 }
 
 .yellow-radial p {
@@ -334,4 +340,12 @@ input.range::-ms-fill-upper {
   line-height: 25px;
   text-align: right;
   min-width: 680px;
+  white-space: pre;
+}
+
+@media screen and (max-width: 600px) {
+  div.yellow-radial {
+    font-size: 12px;
+    padding-right: 10px;
+  }
 }
