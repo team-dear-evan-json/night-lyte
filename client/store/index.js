@@ -6,8 +6,15 @@ import user from './user'
 import businesses from './businesses'
 import crimes from './crimes'
 import subwayEntrances from './entrances'
+import lights from './lights'
 
-const reducer = combineReducers({user, businesses, crimes, subwayEntrances})
+const reducer = combineReducers({
+  user,
+  businesses,
+  crimes,
+  subwayEntrances,
+  lights
+})
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
