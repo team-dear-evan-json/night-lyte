@@ -32,6 +32,7 @@ export const fetchCrimesFromApi = coords => async dispatch => {
   try {
     const res = await axios.get(
       `https://data.cityofnewyork.us/resource/qsur-nxze.json?$where=within_circle(geocoded_column, ${coords},300)`,
+
       config
     )
     dispatch(getCrimes(res.data || defaultCrimes))

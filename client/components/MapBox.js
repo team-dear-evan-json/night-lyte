@@ -4,6 +4,7 @@ import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-direct
 import {getBusinessesFromApi} from '../store/businesses'
 import {fetchEntrancesFromApi} from '../store/entrances'
 import {fetchCrimesFromApi} from '../store/crimes'
+import {fetchLightsFromApi} from '../store/lights'
 import {connect} from 'react-redux'
 import Slider from './Slider'
 
@@ -21,6 +22,7 @@ class MapBox extends React.Component {
       crimeFeatures: [],
       businessFeatures: [],
       subwayFeatures: [],
+      lightsFeatures: [],
       map: {}
     }
     this.clearMap = this.clearMap.bind(this)
@@ -118,13 +120,39 @@ class MapBox extends React.Component {
         }
       })
 
+      //lights layer
+      map.addSource('lights', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: this.state.lightsFeatures
+        }
+      })
+      map.addLayer({
+        id: 'Street Lights Reports',
+        type: 'circle',
+        source: 'lights',
+        paint: {
+          'circle-radius': 6,
+          'circle-color': 'green'
+        },
+        layout: {
+          visibility: 'none'
+        }
+      })
+
       ///// Set Up Popups /////
       const popup = new mapboxgl.Popup({
         closeButton: false,
         closeOnClick: false
       })
       ///// Popups for yelp /////
-      const layers = ['Open Businesses', 'Crime Cases', 'Subway Entrances']
+      const layers = [
+        'Open Businesses',
+        'Crime Cases',
+        'Subway Entrances',
+        'Street Lights Reports'
+      ]
       layers.forEach(layer => {
         map.on('mouseenter', layer, function(e) {
           map.getCanvas().style.cursor = 'pointer'
@@ -153,12 +181,12 @@ class MapBox extends React.Component {
     geocoder.on('result', async ({result}) => {
       const geoAddress = result.place_name
       const geoCoords = result.geometry.coordinates
-      const geoCoors = result.geometry.coordinates
+
       this.setState({geoAddress: geoAddress})
 
       //Set data to business layer
       await this.props.getBusinessesFromApi(geoAddress, 1612825200)
-      const yelpGeoJson = this.props.businesses.map(element => {
+      const yelpGeoJson = this.props.businesses.map(function(element) {
         return {
           type: 'Feature',
           geometry: {
@@ -209,7 +237,7 @@ class MapBox extends React.Component {
       })
 
       //set data to subway entrances layer
-      const entranceCoordinates = `${geoCoors[1]}, ${geoCoors[0]}`
+      const entranceCoordinates = `${geoCoords[1]}, ${geoCoords[0]}`
       await this.props.loadEntrances(entranceCoordinates)
       const entranceGeoJson = this.props.subwayEntrances[0].map(entrance => {
         return {
@@ -235,13 +263,42 @@ class MapBox extends React.Component {
         type: 'FeatureCollection',
         features: this.state.subwayFeatures
       })
+
+      //set data to Street lights report layer
+      const lightsCoordinates = `${geoCoords[1]}, ${geoCoords[0]}`
+      await this.props.loadLights(lightsCoordinates)
+
+      const lightsGeoJson = this.props.lights[0].map(light => {
+        return {
+          type: 'Feature',
+          geometry: {
+            coordinates: [light.location.longitude, light.location.latitude],
+            type: 'Point'
+          },
+          properties: {
+            description: `Condition: ${light.descriptor}, Status: ${
+              light.status
+            }`
+          }
+        }
+      })
+      const previousLightsFeatures = this.state.lightsFeatures
+      this.setState({
+        lightsFeatures: [...previousLightsFeatures, ...lightsGeoJson]
+      })
+
+      map.getSource('lights').setData({
+        type: 'FeatureCollection',
+        features: this.state.lightsFeatures
+      })
     })
 
     ///// Layers Filter /////
     const toggleableLayerIds = [
       'Open Businesses',
       'Crime Cases',
-      'Subway Entrances'
+      'Subway Entrances',
+      'Street Lights Reports'
     ]
 
     // set up the corresponding toggle button for each layer
@@ -302,7 +359,16 @@ class MapBox extends React.Component {
       type: 'FeatureCollection',
       features: []
     })
-    this.setState({crimeFeatures: [], businessFeatures: [], subwayFeatures: []})
+    map.getSource('lights').setData({
+      type: 'FeatureCollection',
+      features: []
+    })
+    this.setState({
+      crimeFeatures: [],
+      businessFeatures: [],
+      subwayFeatures: [],
+      lightsFeatures: []
+    })
   }
 
   render() {
@@ -328,12 +394,14 @@ const mapState = state => {
   return {
     businesses: state.businesses,
     crimes: state.crimes,
-    subwayEntrances: state.subwayEntrances
+    subwayEntrances: state.subwayEntrances,
+    lights: state.lights
   }
 }
 
 const mapDispatch = dispatch => {
   return {
+    loadLights: coords => dispatch(fetchLightsFromApi(coords)),
     loadEntrances: coors => dispatch(fetchEntrancesFromApi(coors)),
     loadAllCrimes: coords => dispatch(fetchCrimesFromApi(coords)),
     getBusinessesFromApi: (inputAddress, hour) =>
