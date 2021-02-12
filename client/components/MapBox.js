@@ -181,8 +181,7 @@ class MapBox extends React.Component {
     geocoder.on('result', async ({result}) => {
       const geoAddress = result.place_name
       const geoCoords = result.geometry.coordinates
-      const geoCoors = result.geometry.coordinates
-      const geoLocation = result.geometry.coordinates
+
       this.setState({geoAddress: geoAddress})
 
       //Set data to business layer
@@ -238,7 +237,7 @@ class MapBox extends React.Component {
       })
 
       //set data to subway entrances layer
-      const entranceCoordinates = `${geoCoors[1]}, ${geoCoors[0]}`
+      const entranceCoordinates = `${geoCoords[1]}, ${geoCoords[0]}`
       await this.props.loadEntrances(entranceCoordinates)
       const entranceGeoJson = this.props.subwayEntrances[0].map(entrance => {
         return {
@@ -266,24 +265,28 @@ class MapBox extends React.Component {
       })
 
       //set data to Street lights report layer
-      const lightsCoordinates = `${geoLocation[1]}, ${geoLocation[0]}`
+      const lightsCoordinates = `${geoCoords[1]}, ${geoCoords[0]}`
       await this.props.loadLights(lightsCoordinates)
+
       const lightsGeoJson = this.props.lights[0].map(light => {
         return {
           type: 'Feature',
           geometry: {
-            coordinates: [light.location.latitude, light.location.longitude],
+            coordinates: [light.location.longitude, light.location.latitude],
             type: 'Point'
           },
           properties: {
-            description: `Condition: ${light.descriptor}`
+            description: `Condition: ${light.descriptor}, Status: ${
+              light.status
+            }`
           }
         }
       })
       const previousLightsFeatures = this.state.lightsFeatures
       this.setState({
-        subwayFeatures: [...previousLightsFeatures, ...lightsGeoJson]
+        lightsFeatures: [...previousLightsFeatures, ...lightsGeoJson]
       })
+
       map.getSource('lights').setData({
         type: 'FeatureCollection',
         features: this.state.lightsFeatures
