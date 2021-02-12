@@ -10,8 +10,6 @@ import {fetchCrimesFromApi} from '../store/crimes'
 import {connect} from 'react-redux'
 import Slider from './Slider'
 
-function arrayToGeoJson(array) {}
-
 mapboxgl.accessToken =
   'pk.eyJ1IjoicmFmYWVsYW5kcmVzNTQiLCJhIjoiY2todXR1enlqMDltYjJxbWw4dnp4aDZrYyJ9.rP9cSw3nVs_ysNYCemYwKw'
 
@@ -23,10 +21,10 @@ class MapBox extends React.Component {
       latitude: 37.78,
       zoom: 14,
       geoAddress: ''
-      // visibility: 'visible',
     }
   }
   async componentDidMount() {
+    ///// Map set up /////
     // Creates new map instance
     const map = new mapboxgl.Map({
       container: this.mapWrapper,
@@ -39,10 +37,9 @@ class MapBox extends React.Component {
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl
     })
-
     map.addControl(geocoder, 'top-right')
 
-    // Creates new directions control instance
+    // Creates a directions control
     const directions = new MapboxDirections({
       accessToken: mapboxgl.accessToken,
       unit: 'metric',
@@ -51,6 +48,142 @@ class MapBox extends React.Component {
 
     map.addControl(directions, 'top-right')
 
+    ///// Setting map data layers /////
+    map.on('load', () => {
+      //yelp layer
+      map.addSource('yelp', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      })
+      map.addLayer({
+        id: 'Open Businesses',
+        type: 'circle',
+        source: 'yelp',
+        paint: {
+          'circle-radius': 18,
+          'circle-color': '#E9C37B',
+          'circle-opacity': 0.6
+        }
+      })
+
+      //crimes layer
+      map.addSource('crimes', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      })
+      map.addLayer({
+        id: 'Crime Cases',
+        type: 'circle',
+        source: 'crimes',
+        paint: {
+          'circle-radius': 6,
+          'circle-color': '#B42222'
+        },
+        layout: {
+          visibility: 'none'
+        }
+      })
+
+      //subway layer
+      map.addSource('subwayEntrances', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      })
+      map.addLayer({
+        id: 'Subway Entrances',
+        type: 'circle',
+        source: 'subwayEntrances',
+        paint: {
+          'circle-radius': 6,
+          'circle-color': '#2360A5'
+        },
+        layout: {
+          visibility: 'none'
+        }
+      })
+
+      ///// Set Up Popups /////
+      const popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
+      })
+      ///// Popups for yelp /////
+      map.on('mouseenter', 'Open Businesses', function(e) {
+        map.getCanvas().style.cursor = 'pointer'
+
+        const coordinates = e.features[0].geometry.coordinates.slice()
+        const description = e.features[0].properties.description
+
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
+        }
+
+        popup
+          .setLngLat(coordinates)
+          .setHTML(description)
+          .addTo(map)
+      })
+
+      map.on('mouseleave', 'Open Businesses', function() {
+        map.getCanvas().style.cursor = ''
+        popup.remove()
+      })
+
+      ///// Popups for crimes /////
+      map.on('mouseenter', 'Crime Cases', function(e) {
+        map.getCanvas().style.cursor = 'pointer'
+
+        const coordinates = e.features[0].geometry.coordinates.slice()
+        const description = e.features[0].properties.description
+
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
+        }
+
+        popup
+          .setLngLat(coordinates)
+          .setHTML(description)
+          .addTo(map)
+      })
+
+      map.on('mouseleave', 'Crime Cases', function() {
+        map.getCanvas().style.cursor = ''
+        popup.remove()
+      })
+
+      ///// Popups for Subway /////
+      map.on('mouseenter', 'Subway Entrances', function(e) {
+        map.getCanvas().style.cursor = 'pointer'
+
+        const coordinates = e.features[0].geometry.coordinates.slice()
+        const description = e.features[0].properties.description
+
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
+        }
+
+        popup
+          .setLngLat(coordinates)
+          .setHTML(description)
+          .addTo(map)
+      })
+
+      map.on('mouseleave', 'Subway Entrances', function() {
+        map.getCanvas().style.cursor = ''
+        popup.remove()
+      })
+    })
+
+    ///// Set up functionality after an area has been searched /////
     geocoder.on('result', async ({result}) => {
       const geoAddress = result.place_name
       const geoCoords = result.geometry.coordinates
@@ -70,93 +203,39 @@ class MapBox extends React.Component {
             type: 'Point'
           },
           properties: {
-            name: element.name,
-            address: element.location.address1
+            description: `Name: ${element.name},
+            Address: ${element.location.address1}`
           }
         }
       })
-      map.addSource('yelp', {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: yelpGeoJson
-        }
-      })
-      map.addLayer({
-        id: 'Open Businesses',
-        type: 'circle',
-        source: 'yelp',
-        paint: {
-          'circle-radius': 18,
-          'circle-color': '#E9C37B',
-          'circle-opacity': 0.6
-        }
-      })
-      // this is for popups!!!!! //
-      // map.on('click', 'Open Businesses', function (e) {
-      //   const coordinates = e.features[0].geometry.coordinates.slice()
-      //   const description = e.features[0].properties.description
+      map
+        .getSource('yelp')
+        .setData({type: 'FeatureCollection', features: yelpGeoJson})
 
-      //   // Ensure that if the map is zoomed out such that multiple
-      //   // copies of the feature are visible, the popup appears
-      //   // over the copy being pointed to.
-      //   while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-      //     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
-      //   }
-
-      //   new mapboxgl.Popup()
-      //     .setLngLat(coordinates)
-      //     .setHTML(description)
-      //     .addTo(map)
-      // })
-
-      // // Change the cursor to a pointer when the mouse is over the places layer.
-      // map.on('mouseenter', 'Open Businesses', function () {
-      //   map.getCanvas().style.cursor = 'pointer'
-      // })
-
-      // // Change it back to a pointer when it leaves.
-      // map.on('mouseleave', 'Open Businesses', function () {
-      //   map.getCanvas().style.cursor = ''
-      // })
-
-      //create crime layer
+      //set data to crime layer
       const crimeCoords = `${geoCoords[1]}, ${geoCoords[0]}`
       await this.props.loadAllCrimes(crimeCoords)
       const crimesGeoJson = this.props.crimes[0].map(element => {
+        const crimeDate = element.arrest_date.slice(0, 10)
         return {
           type: 'Feature',
           geometry: {
             coordinates: [Number(element.longitude), Number(element.latitude)],
             type: 'Point'
+          },
+          properties: {
+            description: `Reported on: ${crimeDate}`
           }
         }
       })
-      map.addSource('crime', {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: crimesGeoJson
-        }
-      })
-      map.addLayer({
-        id: 'Crime cases',
-        type: 'circle',
-        source: 'crime',
-        paint: {
-          'circle-radius': 6,
-          'circle-color': '#B42222'
-        },
-        layout: {
-          visibility: 'none'
-        }
-      })
+      map
+        .getSource('crimes')
+        .setData({type: 'FeatureCollection', features: crimesGeoJson})
 
-      //create entrances layer
-
+      //set data to entrances layer
       const entranceCoordinates = `${geoCoors[1]}, ${geoCoors[0]}`
       await this.props.loadEntrances(entranceCoordinates)
-      const entranceGeoJson = this.props.entrances[0].map(entrance => {
+      const entranceGeoJson = this.props.subwayEntrances[0].map(entrance => {
         return {
           type: 'Feature',
           geometry: {
@@ -165,36 +244,23 @@ class MapBox extends React.Component {
               entrance.the_geom.coordinates[1]
             ],
             type: 'Point'
+          },
+          properties: {
+            description: `Station name: ${entrance.name}, 
+            Lines: ${entrance.line}`
           }
         }
       })
-      map.addSource('entrance', {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: entranceGeoJson
-        }
-      })
-      map.addLayer({
-        id: 'Subway entrances',
-        type: 'circle',
-        source: 'entrance',
-        paint: {
-          'circle-radius': 6,
-          'circle-color': 'green'
-        },
-        layout: {
-          visibility: 'none'
-        }
-      })
+      map
+        .getSource('subwayEntrances')
+        .setData({type: 'FeatureCollection', features: entranceGeoJson})
     })
 
-    //Layers Filter
-    // enumerate ids of the layers
+    ///// Layers Filter /////
     const toggleableLayerIds = [
       'Open Businesses',
-      'Crime cases',
-      'Subway entrances'
+      'Crime Cases',
+      'Subway Entrances'
     ]
 
     // set up the corresponding toggle button for each layer
@@ -230,6 +296,8 @@ class MapBox extends React.Component {
       const layers = document.getElementById('menu')
       layers.appendChild(link)
     }
+
+    ///// For testing purposes /////
     map.on('move', () => {
       this.setState({
         lng: map.getCenter().lng.toFixed(6),
@@ -245,13 +313,13 @@ class MapBox extends React.Component {
         <div id="menu" />
         <Slider />
         <div ref={el => (this.mapWrapper = el)} className="mapWrapper" />
-        <div className="sidebarStyle">
+        {/* <div className="sidebarStyle">
           <div>
             Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom:{' '}
             {this.state.zoom} | Address:
             {this.state.geoAddress}
           </div>
-        </div>
+        </div> */}
       </div>
     )
   }
@@ -261,7 +329,7 @@ const mapState = state => {
   return {
     businesses: state.businesses,
     crimes: state.crimes,
-    entrances: state.entrances
+    subwayEntrances: state.subwayEntrances
   }
 }
 
