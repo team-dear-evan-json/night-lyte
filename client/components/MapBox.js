@@ -367,10 +367,34 @@ class MapBox extends React.Component {
         )
       })
     }
-    this.clearMap()
-
-    await this.componentDidMount()
-    console.log(this.state.hour)
+    await this.props.getBusinessesFromApi(
+      this.state.geoAddress,
+      this.state.hour
+    )
+    const yelpGeoJson = this.props.businesses.map(function(element) {
+      return {
+        type: 'Feature',
+        geometry: {
+          coordinates: [
+            element.coordinates.longitude,
+            element.coordinates.latitude
+          ],
+          type: 'Point'
+        },
+        properties: {
+          description: `Name: ${element.name},
+            Address: ${element.location.address1}`
+        }
+      }
+    })
+    const previousBusinessFeatures = this.state.businessFeatures
+    this.setState({
+      businessFeatures: [...previousBusinessFeatures, ...yelpGeoJson]
+    })
+    map.getSource('yelp').setData({
+      type: 'FeatureCollection',
+      features: this.state.businessFeatures
+    })
   }
 
   clearMap() {
