@@ -3,6 +3,13 @@ body {
   margin: auto;
 }
 
+.app-div {
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+  width: 100vw;
+}
+
 a {
   text-decoration: none;
 }
@@ -16,13 +23,10 @@ form div {
   display: inline-block;
 }
 
-.leaflet-container {
-  width: 100%;
-  height: 90vh;
-}
 /*  Navbar */
 
 #nav-container {
+  flex: initial;
   width: 100%;
   background: #191a1a;
 }
@@ -50,13 +54,7 @@ nav a {
   width: 50%;
 }
 
-.mapWrapper {
-  width: 100vw;
-  height: 100vh;
-}
-
-/* Slider */
-/* SIDE PANEL */
+/* Slider Container */
 .sidepanel {
   display: flex;
   flex-flow: row;
@@ -70,6 +68,7 @@ nav a {
   flex: 1;
   text-align: center;
   font-family: 'Courier New', Courier, monospace;
+  width: 100%;
 }
 
 .sidepanel p,
@@ -97,7 +96,7 @@ nav a {
   /* padding-bottom: 1em; */
 }
 
-/* SIDE PANEL - SLIDER */
+/* Slider */
 svg {
   fill: #cbd2d3;
 }
@@ -217,7 +216,23 @@ input.range::-ms-fill-upper {
   border: 0;
 }
 
-/* mapboxgl- */
+/* MAPBOX ITEMS */
+.map-container {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.mapWrapper {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+/* Longitude-Latitude-Zoom bottom info */
 .sidebarStyle {
   display: inline-block;
   position: absolute;
@@ -230,40 +245,7 @@ input.range::-ms-fill-upper {
   padding: 6px;
   font-weight: bold;
 }
-.mapboxgl-marker {
-  /* width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  border: 1px solid gray;
-  background-color: yellow; */
-  /* 1st combination */
-  /* width: 25px;
-  backgroundImage: `./images/marker_orb_1x.svg`;
-  height: 25px;
-  border-radius: 50%;
-  border: 1px solid gray;
-  background-color: lightblue; */
-
-  /* 2nd combination */
-  background-image: url('images/icon.png');
-  background-size: cover;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  opacity: 0.8;
-  z-index: 1;
-  /* 3rd combination*/
-}
-
-.marker {
-  background-image: url('images/icon.png');
-  background-size: cover;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  opacity: 0.8;
-}
-
+/* For Layers */
 #menu {
   background: #fff;
   position: absolute;
@@ -304,4 +286,39 @@ input.range::-ms-fill-upper {
 
 #menu a.active:hover {
   background: #3074a4;
+}
+
+/* OurStory Component */
+#story-container {
+  background-image: url('images/black-and-white-walking-alone.jpg');
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-position: bottom center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.story-content {
+  height: 60%;
+}
+
+.story-content h1 {
+  margin: 0;
+  padding: 1em;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 36px;
+  text-align: right;
+}
+
+.yellow-radial {
+  float: right;
+  background-color: #e9c37b;
+  opacity: 0.8;
+  width: 40%;
+  height: 60%;
+  border-radius: 0px 0px 0px 650px;
 }
