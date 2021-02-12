@@ -2,6 +2,7 @@ import React from 'react'
 
 const SliderBar = props => {
   console.log('slider props ', props)
+
   return (
     <div id="mySidepanel" className="sidepanel">
       <div id="slider" className="panel-item">

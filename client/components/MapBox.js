@@ -11,13 +11,7 @@ import SliderBar from './SliderBar'
 mapboxgl.accessToken =
   'pk.eyJ1IjoicmFmYWVsYW5kcmVzNTQiLCJhIjoiY2todXR1enlqMDltYjJxbWw4dnp4aDZrYyJ9.rP9cSw3nVs_ysNYCemYwKw'
 
-const defaultState = {
-  longitude: -122.45,
-  latitude: 37.78,
-  zoom: 14,
-  geoAddress: '',
-  hour: 1613102400
-}
+let time = parseInt((new Date().getTime() / 1000).toFixed(0))
 
 class MapBox extends React.Component {
   constructor(props) {
@@ -26,6 +20,7 @@ class MapBox extends React.Component {
       longitude: -122.45,
       latitude: 37.78,
       zoom: 14,
+      hour: time,
       geoAddress: '',
       crimeFeatures: [],
       businessFeatures: [],
@@ -34,6 +29,7 @@ class MapBox extends React.Component {
       map: {}
     }
     this.clearMap = this.clearMap.bind(this)
+    this.changeHandler = this.changeHandler.bind(this)
   }
   async componentDidMount() {
     ///// Map set up /////
@@ -354,9 +350,6 @@ class MapBox extends React.Component {
   }
 
   async changeHandler(event) {
-    console.log('number: ', Number(event.target.value))
-    console.log('tyopeof: ', typeof Number(event.target.value))
-
     if (Number(event.target.value) === 3) {
       this.setState({
         [event.target.name]: 1613199600
@@ -374,11 +367,9 @@ class MapBox extends React.Component {
         )
       })
     }
+    this.clearMap()
 
-    await this.props.getBusinessesFromApi(
-      this.state.geoAddress,
-      this.state.hour
-    )
+    await this.componentDidMount()
     console.log(this.state.hour)
   }
 
@@ -409,6 +400,7 @@ class MapBox extends React.Component {
   }
 
   render() {
+    console.log('hour: ', this.state.hour)
     return (
       <div>
         <div id="menu" />
