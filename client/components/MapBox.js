@@ -46,7 +46,7 @@ class MapBox extends React.Component {
       mapboxgl: mapboxgl,
       bbox: bbox
     })
-    map.addControl(geocoder, 'top-left')
+    map.addControl(geocoder, 'top-right')
 
     // Creates a directions control
     const directions = new MapboxDirections({
@@ -55,7 +55,7 @@ class MapBox extends React.Component {
       profile: 'mapbox/walking'
     })
 
-    map.addControl(directions, 'top-left')
+    map.addControl(directions, 'top-right')
 
     ///// Setting map data layers /////
     map.on('load', () => {
