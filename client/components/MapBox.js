@@ -243,7 +243,6 @@ class MapBox extends React.Component {
     return (
       <div className="map-container">
         <div id="menu" />
-        <Slider />
         <div ref={el => (this.mapWrapper = el)} className="mapWrapper" />
         <div className="sidebarStyle">
           <div>

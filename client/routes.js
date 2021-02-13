@@ -13,6 +13,7 @@ import {
 import {me} from './store'
 import MapBox from './components/MapBox'
 import OurStory from './components/OurStory'
+import SafetyTips from './components/SafetyTips'
 
 /**
  * COMPONENT
@@ -30,6 +31,7 @@ class Routes extends Component {
         <Route path="/test" component={MainMapDummy} />
         <Route exact path="/crimes" component={CrimesMap} />
         <Route exact path="/ourstory" component={OurStory} />
+        <Route exact path="/tips" component={SafetyTips} />
         <Route exact path="/" component={MapBox} />
       </Switch>
     )
