@@ -27,9 +27,7 @@ export const fetchLightsFromApi = coords => async dispatch => {
 
   try {
     const res = await axios.get(
-      `https://data.cityofnewyork.us/resource/diik-ryem.json?$where=within_circle(location, ${coords},1000)`,
-      //https://data.cityofnewyork.us/resource/diik-ryem.json
-
+      `https://data.cityofnewyork.us/resource/diik-ryem.json?$where=within_circle(location, ${coords},500)`,
       config
     )
     dispatch(getDamagedLights(res.data || defaultLights))

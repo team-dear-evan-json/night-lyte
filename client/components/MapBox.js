@@ -298,7 +298,8 @@ class MapBox extends React.Component {
       'Open Businesses',
       'Crime Cases',
       'Subway Entrances',
-      'Street Lights Reports'
+      'Street Lights Reports',
+      'Clear Data'
     ]
 
     // set up the corresponding toggle button for each layer
@@ -313,21 +314,27 @@ class MapBox extends React.Component {
         link.className = ''
       }
       link.textContent = id
+      if (id === 'Clear Data') {
+        link.onclick = e => {
+          e.preventDefault()
+          e.stopPropagation()
+          this.clearMap()
+        }
+      } else {
+        link.onclick = function(e) {
+          const clickedLayer = this.textContent
+          e.preventDefault()
+          e.stopPropagation()
+          const visibility = map.getLayoutProperty(clickedLayer, 'visibility')
 
-      link.onclick = function(e) {
-        const clickedLayer = this.textContent
-        e.preventDefault()
-        e.stopPropagation()
-
-        const visibility = map.getLayoutProperty(clickedLayer, 'visibility')
-
-        // toggle layer visibility by changing the layout object's visibility property
-        if (visibility === 'visible') {
-          map.setLayoutProperty(clickedLayer, 'visibility', 'none')
-          this.className = ''
-        } else {
-          this.className = 'active'
-          map.setLayoutProperty(clickedLayer, 'visibility', 'visible')
+          // toggle layer visibility by changing the layout object's visibility property
+          if (visibility === 'visible') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none')
+            this.className = ''
+          } else {
+            this.className = 'active'
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible')
+          }
         }
       }
 
@@ -346,22 +353,13 @@ class MapBox extends React.Component {
   }
 
   clearMap() {
+    const sources = ['crimes', 'yelp', 'subwayEntrances', 'lights']
     const map = this.state.map
-    map.getSource('crimes').setData({
-      type: 'FeatureCollection',
-      features: []
-    })
-    map.getSource('yelp').setData({
-      type: 'FeatureCollection',
-      features: []
-    })
-    map.getSource('subwayEntrances').setData({
-      type: 'FeatureCollection',
-      features: []
-    })
-    map.getSource('lights').setData({
-      type: 'FeatureCollection',
-      features: []
+    sources.forEach(source => {
+      map.getSource(source).setData({
+        type: 'FeatureCollection',
+        features: []
+      })
     })
     this.setState({
       crimeFeatures: [],
@@ -377,14 +375,6 @@ class MapBox extends React.Component {
         <div id="menu" />
         <Slider />
         <div ref={el => (this.mapWrapper = el)} className="mapWrapper" />
-        <button
-          id="clearButton"
-          onClick={() => {
-            this.clearMap()
-          }}
-        >
-          Clear Data
-        </button>
       </div>
     )
   }
