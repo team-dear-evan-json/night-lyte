@@ -46,7 +46,7 @@ class MapBox extends React.Component {
       mapboxgl: mapboxgl,
       bbox: bbox
     })
-    map.addControl(geocoder, 'top-right')
+    map.addControl(geocoder, 'top-left')
 
     // Creates a directions control
     const directions = new MapboxDirections({
@@ -55,7 +55,7 @@ class MapBox extends React.Component {
       profile: 'mapbox/walking'
     })
 
-    map.addControl(directions, 'top-right')
+    map.addControl(directions, 'top-left')
 
     ///// Setting map data layers /////
     map.on('load', () => {
@@ -298,7 +298,8 @@ class MapBox extends React.Component {
       'Open Businesses',
       'Crime Cases',
       'Subway Entrances',
-      'Street Lights Reports'
+      'Street Lights Reports',
+      'Clear Data'
     ]
 
     // set up the corresponding toggle button for each layer
@@ -313,21 +314,27 @@ class MapBox extends React.Component {
         link.className = ''
       }
       link.textContent = id
+      if (id === 'Clear Data') {
+        link.onclick = e => {
+          e.preventDefault()
+          e.stopPropagation()
+          this.clearMap()
+        }
+      } else {
+        link.onclick = function(e) {
+          const clickedLayer = this.textContent
+          e.preventDefault()
+          e.stopPropagation()
+          const visibility = map.getLayoutProperty(clickedLayer, 'visibility')
 
-      link.onclick = function(e) {
-        const clickedLayer = this.textContent
-        e.preventDefault()
-        e.stopPropagation()
-
-        const visibility = map.getLayoutProperty(clickedLayer, 'visibility')
-
-        // toggle layer visibility by changing the layout object's visibility property
-        if (visibility === 'visible') {
-          map.setLayoutProperty(clickedLayer, 'visibility', 'none')
-          this.className = ''
-        } else {
-          this.className = 'active'
-          map.setLayoutProperty(clickedLayer, 'visibility', 'visible')
+          // toggle layer visibility by changing the layout object's visibility property
+          if (visibility === 'visible') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none')
+            this.className = ''
+          } else {
+            this.className = 'active'
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible')
+          }
         }
       }
 
