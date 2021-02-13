@@ -11,9 +11,9 @@ import {
   CrimesMap
 } from './components'
 import {me} from './store'
-// import HomePage from './components/HomePage'
-// import LeafletMap from './components/LeafletMap'
 import MapBox from './components/MapBox'
+import OurStory from './components/OurStory'
+import SafetyTips from './components/SafetyTips'
 
 /**
  * COMPONENT
@@ -28,23 +28,11 @@ class Routes extends Component {
 
     return (
       <Switch>
-        {/* <Route path="/" exact component={HomePage} /> */}
         <Route path="/test" component={MainMapDummy} />
         <Route exact path="/crimes" component={CrimesMap} />
+        <Route exact path="/ourstory" component={OurStory} />
+        <Route exact path="/tips" component={SafetyTips} />
         <Route exact path="/" component={MapBox} />
-        {/* <Route path="/nav" exact component={LeafletMap} /> */}
-
-        {/* Routes placed here are available to all visitors */}
-        {/* <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
-        {isLoggedIn && (
-          <Switch>
-            { Routes placed here are only available after logging in }
-            <Route path="/home" component={UserHome} />
-          </Switch>
-        )}
-        { Displays our Login component as a fallback }
-        <Route component={Login} /> */}
       </Switch>
     )
   }

@@ -13,8 +13,9 @@ const Navbar = () => (
           </Link>
         </span>
       </div>
-      <div id="our-story">
+      <div id="nav-links">
         <Link to="/ourstory">Our Story</Link>
+        <Link to="/tips">Safety Tips</Link>
       </div>
     </nav>
   </div>

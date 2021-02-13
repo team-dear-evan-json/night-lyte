@@ -253,7 +253,7 @@ class MapBox extends React.Component {
             type: 'Point'
           },
           properties: {
-            description: `Station name: ${entrance.name}, 
+            description: `Station name: ${entrance.name},
             Lines: ${entrance.line}`
           }
         }
@@ -374,10 +374,17 @@ class MapBox extends React.Component {
 
   render() {
     return (
-      <div>
-        <div id="menu" />
-        <Slider />
-        <div ref={el => (this.mapWrapper = el)} className="mapWrapper" />
+      <div className="map-container">
+        <div ref={el => (this.mapWrapper = el)} className="mapWrapper">
+          <div id="menu" />
+        </div>
+        <div className="sidebarStyle">
+          <div>
+            page: / | Longitude: {this.state.lng} | Latitude: {this.state.lat} |
+            Zoom: {this.state.zoom} | Address:
+            {this.state.geoAddress}
+          </div>
+        </div>
       </div>
     )
   }
