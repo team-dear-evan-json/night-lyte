@@ -11,6 +11,8 @@ import Slider from './Slider'
 mapboxgl.accessToken =
   'pk.eyJ1IjoicmFmYWVsYW5kcmVzNTQiLCJhIjoiY2todXR1enlqMDltYjJxbWw4dnp4aDZrYyJ9.rP9cSw3nVs_ysNYCemYwKw'
 
+let time = parseInt((new Date().getTime() / 1000).toFixed(0))
+
 class MapBox extends React.Component {
   constructor(props) {
     super(props)
@@ -23,7 +25,8 @@ class MapBox extends React.Component {
       businessFeatures: [],
       subwayFeatures: [],
       lightsFeatures: [],
-      map: {}
+      map: {},
+      hour: time
     }
     this.clearMap = this.clearMap.bind(this)
   }
@@ -185,7 +188,7 @@ class MapBox extends React.Component {
       this.setState({geoAddress: geoAddress})
 
       //Set data to business layer
-      await this.props.getBusinessesFromApi(geoAddress, 1612825200)
+      await this.props.getBusinessesFromApi(geoAddress, this.state.hour)
       const yelpGeoJson = this.props.businesses.map(function(element) {
         return {
           type: 'Feature',
