@@ -239,11 +239,18 @@ input.range::-ms-fill-upper {
   margin: 0;
 }
 
+/* Controls */
+.mapboxgl-ctrl-geocoder {
+  width: 200px !important;
+  margin-right: 30px !important;
+  /* background-color: blue!important; */
+}
+
 /* Longitude-Latitude-Zoom bottom info */
 .sidebarStyle {
   display: inline-block;
   position: absolute;
-  bottom: 0;
+  bottom: 15px;
   right: 0;
   margin: 12px;
   background-color: #404040;
@@ -257,10 +264,11 @@ input.range::-ms-fill-upper {
   background: #fff;
   position: absolute;
   z-index: 1;
-  top: 10px;
+  top: 290px;
   right: 10px;
+  margin-right: 20px;
   border-radius: 3px;
-  width: 120px;
+  width: 240px;
   border: 1px solid rgba(0, 0, 0, 0.4);
   font-family: 'Open Sans', sans-serif;
 }
