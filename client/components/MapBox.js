@@ -353,22 +353,13 @@ class MapBox extends React.Component {
   }
 
   clearMap() {
+    const sources = ['crimes', 'yelp', 'subwayEntrances', 'lights']
     const map = this.state.map
-    map.getSource('crimes').setData({
-      type: 'FeatureCollection',
-      features: []
-    })
-    map.getSource('yelp').setData({
-      type: 'FeatureCollection',
-      features: []
-    })
-    map.getSource('subwayEntrances').setData({
-      type: 'FeatureCollection',
-      features: []
-    })
-    map.getSource('lights').setData({
-      type: 'FeatureCollection',
-      features: []
+    sources.forEach(source => {
+      map.getSource(source).setData({
+        type: 'FeatureCollection',
+        features: []
+      })
     })
     this.setState({
       crimeFeatures: [],
@@ -384,14 +375,6 @@ class MapBox extends React.Component {
         <div id="menu" />
         <Slider />
         <div ref={el => (this.mapWrapper = el)} className="mapWrapper" />
-        <button
-          id="clearButton"
-          onClick={() => {
-            this.clearMap()
-          }}
-        >
-          Clear Data
-        </button>
       </div>
     )
   }
