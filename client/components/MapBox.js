@@ -7,9 +7,9 @@ import {fetchCrimesFromApi} from '../store/crimes'
 import {fetchLightsFromApi} from '../store/lights'
 import {connect} from 'react-redux'
 import Slider from './Slider'
+if (process.env.NODE_ENV !== 'production') require('../../secrets')
 
-mapboxgl.accessToken =
-  'pk.eyJ1IjoicmFmYWVsYW5kcmVzNTQiLCJhIjoiY2todXR1enlqMDltYjJxbWw4dnp4aDZrYyJ9.rP9cSw3nVs_ysNYCemYwKw'
+mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN
 
 let time = parseInt((new Date().getTime() / 1000).toFixed(0))
 
