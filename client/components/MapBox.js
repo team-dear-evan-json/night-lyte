@@ -6,7 +6,6 @@ import {fetchEntrancesFromApi} from '../store/entrances'
 import {fetchCrimesFromApi} from '../store/crimes'
 import {fetchLightsFromApi} from '../store/lights'
 import {connect} from 'react-redux'
-import Slider from './Slider'
 if (process.env.NODE_ENV !== 'production') require('../../secrets')
 
 mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN

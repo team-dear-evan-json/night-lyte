@@ -2,18 +2,8 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {
-  Login,
-  Signup,
-  UserHome,
-  MainMap,
-  MainMapDummy,
-  CrimesMap
-} from './components'
+import {MapBox, OurStory, SafetyTips} from './components'
 import {me} from './store'
-import MapBox from './components/MapBox'
-import OurStory from './components/OurStory'
-import SafetyTips from './components/SafetyTips'
 
 /**
  * COMPONENT
@@ -28,8 +18,6 @@ class Routes extends Component {
 
     return (
       <Switch>
-        <Route path="/test" component={MainMapDummy} />
-        <Route exact path="/crimes" component={CrimesMap} />
         <Route exact path="/ourstory" component={OurStory} />
         <Route exact path="/tips" component={SafetyTips} />
         <Route exact path="/" component={MapBox} />
