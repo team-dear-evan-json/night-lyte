@@ -75,7 +75,7 @@ class MapBox extends React.Component {
         type: 'circle',
         source: 'yelp',
         paint: {
-          'circle-radius': 18,
+          'circle-radius': 16,
           'circle-color': '#E9C37B',
           'circle-opacity': 0.6
         }
@@ -137,7 +137,7 @@ class MapBox extends React.Component {
         source: 'lights',
         paint: {
           'circle-radius': 6,
-          'circle-color': 'green'
+          'circle-color': '#000'
         },
         layout: {
           visibility: 'none'
@@ -147,7 +147,8 @@ class MapBox extends React.Component {
       ///// Set Up Popups /////
       const popup = new mapboxgl.Popup({
         closeButton: false,
-        closeOnClick: false
+        closeOnClick: false,
+        maxWidth: '200px'
       })
       ///// Popups for yelp /////
       const layers = [
@@ -377,12 +378,37 @@ class MapBox extends React.Component {
       <div className="map-container">
         <div ref={el => (this.mapWrapper = el)} className="mapWrapper">
           <div id="menu" />
-        </div>
-        <div className="sidebarStyle">
-          <div>
-            page: / | Longitude: {this.state.lng} | Latitude: {this.state.lat} |
-            Zoom: {this.state.zoom} | Address:
-            {this.state.geoAddress}
+          <div className="legend">
+            <div>
+              <span id="legend-biz">
+                <svg height="10" width="10">
+                  <circle cx="5" cy="5" r="4" fill="#b9934d" />
+                </svg>
+                businesses open now
+              </span>
+              <br />
+              <span id="legend-crime">
+                <svg height="10" width="10">
+                  <circle cx="5" cy="5" r="4" fill="#B42222" />
+                </svg>
+                crimes reported in dec 2020 (within 300m)
+              </span>
+              <br />
+              <span id="legend-subway">
+                <svg height="10" width="10">
+                  <circle cx="5" cy="5" r="4" fill="#2360A5" />
+                </svg>
+                subway entrances
+              </span>
+              <br />
+              <span id="legend-streetlight">
+                <svg height="10" width="10">
+                  <circle cx="5" cy="5" r="4" fill="#000" />
+                </svg>
+                street light complaints in 2020 (open/pending)
+              </span>
+              <br />
+            </div>
           </div>
         </div>
       </div>
