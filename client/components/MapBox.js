@@ -377,12 +377,37 @@ class MapBox extends React.Component {
       <div className="map-container">
         <div ref={el => (this.mapWrapper = el)} className="mapWrapper">
           <div id="menu" />
-        </div>
-        <div className="sidebarStyle">
-          <div>
-            page: / | Longitude: {this.state.lng} | Latitude: {this.state.lat} |
-            Zoom: {this.state.zoom} | Address:
-            {this.state.geoAddress}
+          <div className="legend">
+            <div>
+              <span id="legend-biz">
+                <svg height="10" width="10">
+                  <circle cx="5" cy="5" r="4" fill="#b9934d" />
+                </svg>
+                businesses open now
+              </span>
+              <br />
+              <span id="legend-crime">
+                <svg height="10" width="10">
+                  <circle cx="5" cy="5" r="4" fill="#B42222" />
+                </svg>
+                crimes reported in dec 2020 (within 300m)
+              </span>
+              <br />
+              <span id="legend-subway">
+                <svg height="10" width="10">
+                  <circle cx="5" cy="5" r="4" fill="#2360A5" />
+                </svg>
+                subway entrances
+              </span>
+              <br />
+              <span id="legend-streetlight">
+                <svg height="10" width="10">
+                  <circle cx="5" cy="5" r="4" fill="#000" />
+                </svg>
+                street light complaints in 2020 (open/pending)
+              </span>
+              <br />
+            </div>
           </div>
         </div>
       </div>

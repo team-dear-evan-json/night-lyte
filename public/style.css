@@ -81,6 +81,12 @@ nav {
 }
 
 /* Overriding Map Styling for Controls */
+.mapboxgl-canvas:focus {
+  outline-color: transparent !important;
+}
+
+/* a {color: rgb(28, 26, 26) */
+
 .mapboxgl-ctrl-geocoder {
   width: 200px !important;
   margin-right: 30px !important;
@@ -145,17 +151,22 @@ nav {
 }
 
 /* Legend */
-.sidebarStyle {
+.legend {
   display: inline-block;
   position: absolute;
-  bottom: 15px;
-  right: 0;
+  bottom: 0;
+  left: 0;
   margin: 12px;
-  background-color: #404040;
-  color: #ffffff;
+  background-color: #191a1a;
+  color: #aaa;
   z-index: 1 !important;
   padding: 6px;
+  margin-bottom: 50px;
   font-weight: bold;
+}
+
+.legend svg {
+  padding-right: 10px;
 }
 /* For Data Layers */
 #menu {
