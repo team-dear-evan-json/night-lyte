@@ -85,8 +85,6 @@ nav {
   outline-color: transparent !important;
 }
 
-/* a {color: rgb(28, 26, 26) */
-
 .mapboxgl-ctrl-geocoder {
   width: 200px !important;
   margin-right: 30px !important;
