@@ -75,7 +75,7 @@ class MapBox extends React.Component {
         type: 'circle',
         source: 'yelp',
         paint: {
-          'circle-radius': 18,
+          'circle-radius': 16,
           'circle-color': '#E9C37B',
           'circle-opacity': 0.6
         }
@@ -137,7 +137,7 @@ class MapBox extends React.Component {
         source: 'lights',
         paint: {
           'circle-radius': 6,
-          'circle-color': 'green'
+          'circle-color': '#000'
         },
         layout: {
           visibility: 'none'

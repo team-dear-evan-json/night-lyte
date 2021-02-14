@@ -80,25 +80,71 @@ nav {
   margin: 0;
 }
 
-/* Controls */
+/* Overriding Map Styling for Controls */
 .mapboxgl-ctrl-geocoder {
   width: 200px !important;
   margin-right: 30px !important;
+}
+
+.mapboxgl-ctrl-geocoder input {
+  padding-left: 30px !important;
+  background-color: #191a1a !important;
+  color: #cbd2d3 !important;
+}
+
+.mapboxgl-ctrl-geocoder--button {
+  background-color: transparent !important;
+}
+
+.mapboxgl-ctrl-geocoder .suggestions {
+  background-color: rgb(6, 6, 6) !important;
+}
+
+.mapboxgl-ctrl-geocoder .suggestions > li > a {
+  color: #aaa !important;
+}
+
+.mapboxgl-ctrl-geocoder .suggestions > .active > a,
+.mapboxgl-ctrl-geocoder .suggestions > li > a:hover {
+  background-color: rgb(13, 13, 13) !important;
 }
 
 .mapboxgl-ctrl-directions {
   margin-top: 215px !important;
 }
 
-.mapboxgl-ctrl.mapboxgl-ctrl-attrib {
-  /* width: 280px !important; */
+.directions-icon-reverse {
+  background-image: url('./images/swap.svg') !important;
+  background-color: transparent !important;
+}
+
+.mapboxgl-ctrl-geocoder .geocoder-pin-right *.active {
+  background-color: transparent !important;
+}
+
+.geocoder-icon-close {
+  background-image: url('./images/x.svg') !important;
+}
+
+.mapbox-directions-profile {
+  background-color: #191a1a !important;
+}
+
+.mapbox-directions-profile label {
+  color: #aaa !important;
+}
+
+.mapbox-directions-profile input[type='radio']:checked + label:hover,
+.mapbox-directions-profile input[type='radio']:checked + label {
+  background-color: #b9934d !important;
+  color: #111212 !important;
 }
 
 .mapboxgl-ctrl-attrib-button {
   display: none !important;
 }
 
-/* Longitude-Latitude-Zoom bottom info */
+/* Legend */
 .sidebarStyle {
   display: inline-block;
   position: absolute;
@@ -113,7 +159,7 @@ nav {
 }
 /* For Data Layers */
 #menu {
-  background: #fff;
+  background: #191a1a;
   position: absolute;
   z-index: 1;
   top: 55px;
@@ -127,7 +173,7 @@ nav {
 
 #menu a {
   font-size: 13px;
-  color: #404040;
+  color: #aaa;
   display: block;
   margin: 0;
   padding: 0;
@@ -142,17 +188,17 @@ nav {
 }
 
 #menu a:hover {
-  background-color: #f8f8f8;
-  color: #404040;
+  background-color: #262727;
+  color: #cbd2d3;
 }
 
 #menu a.active {
-  background-color: #3887be;
-  color: #ffffff;
+  background-color: #b9934d;
+  color: #191a1a;
 }
 
 #menu a.active:hover {
-  background: #3074a4;
+  background: #ac8846;
 }
 
 /* OurStory Component */
