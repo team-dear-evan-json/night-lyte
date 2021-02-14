@@ -137,7 +137,9 @@ class MapBox extends React.Component {
         source: 'lights',
         paint: {
           'circle-radius': 6,
-          'circle-color': '#000'
+          'circle-color': '#000',
+          'circle-stroke-color': '#fff',
+          'circle-stroke-width': 1
         },
         layout: {
           visibility: 'none'
@@ -403,7 +405,14 @@ class MapBox extends React.Component {
               <br />
               <span id="legend-streetlight">
                 <svg height="10" width="10">
-                  <circle cx="5" cy="5" r="4" fill="#000" />
+                  <circle
+                    cx="5"
+                    cy="5"
+                    r="4"
+                    fill="#000"
+                    stroke="white"
+                    strokeWidth="1"
+                  />
                 </svg>
                 street light complaints in 2020 (open/pending)
               </span>
