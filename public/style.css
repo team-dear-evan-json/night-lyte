@@ -85,6 +85,15 @@ nav {
   outline-color: transparent !important;
 }
 
+.mapboxgl-popup-content {
+  background-color: #000 !important;
+  color: #aaa;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: #000 !important;
+}
+
 .mapboxgl-ctrl-geocoder {
   width: 200px !important;
   margin-right: 30px !important;

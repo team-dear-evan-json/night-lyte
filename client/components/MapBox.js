@@ -147,7 +147,8 @@ class MapBox extends React.Component {
       ///// Set Up Popups /////
       const popup = new mapboxgl.Popup({
         closeButton: false,
-        closeOnClick: false
+        closeOnClick: false,
+        maxWidth: '200px'
       })
       ///// Popups for yelp /////
       const layers = [
