@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {addLeadingSlash} from 'history/PathUtils'
+if (process.env.NODE_ENV !== 'production') require('../../secrets')
 
 const SET_BUSINESSES = 'SET_BUSINESSES'
 
@@ -17,7 +18,7 @@ export const getBusinessesFromApi = (
           accept: 'application/json',
           'x-requested-with': 'xmlhttprequest',
           'Access-Control-Allow-Origin': '*',
-          Authorization: `Bearer d7me82kfWORLA8U70CIdJzgNKTCzhv-aHEjhB7KNtggEeusVZublUF0AhHlaWsNhzoIfv9KJRPUy7wsK4KglKy2_7BRwVoG1UaRfpEBIz-rjnGM04210jy0hXj0YYHYx`
+          Authorization: process.env.YELP_AUTH
         },
         params: {
           limit: 50,

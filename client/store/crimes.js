@@ -22,7 +22,6 @@ export const fetchCrimesFromApi = coords => async dispatch => {
     method: 'GET',
     body: JSON.stringify({
       $limit: 5000
-      //   app_token: 'pIBlRdatT2tBGvefMsQqjlywQ',
     }),
     headers: {
       'Content-type': 'application/json'
