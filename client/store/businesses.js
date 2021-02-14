@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {addLeadingSlash} from 'history/PathUtils'
+
 if (process.env.NODE_ENV !== 'production') require('../../secrets')
 
 const SET_BUSINESSES = 'SET_BUSINESSES'
