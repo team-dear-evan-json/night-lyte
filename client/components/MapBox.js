@@ -35,7 +35,8 @@ class MapBox extends React.Component {
     // the bounding box for the map and the geo search. first 2 elements are south-west coords, second 2 are north-east.
     const bbox = [-74.308351, 40.446138, -73.663318, 40.927802]
     // Creates new map instance
-    const map = await new mapboxgl.Map({
+    const map = new mapboxgl.Map({
+      accessToken: mapboxgl.accessToken,
       container: this.mapWrapper,
       style: 'mapbox://styles/mapbox/dark-v10',
       center: [-73.985664, 40.748514],
