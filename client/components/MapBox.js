@@ -1,5 +1,6 @@
 import React from 'react'
-import mapboxgl from 'mapbox-gl'
+// import mapboxgl from 'mapbox-gl'
+const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
 import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions'
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
 import {getBusinessesFromApi} from '../store/businesses'
@@ -186,8 +187,8 @@ class MapBox extends React.Component {
 
     ///// Set up functionality after an area has been searched /////
     geocoder.on('result', async ({result}) => {
-      const geoAddress = result.place_name
-      const geoCoords = result.geometry.coordinates
+      const geoAddress = await result.place_name
+      const geoCoords = await result.geometry.coordinates
 
       this.setState({geoAddress: geoAddress})
 
