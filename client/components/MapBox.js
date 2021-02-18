@@ -11,6 +11,7 @@ import {connect} from 'react-redux'
 if (process.env.NODE_ENV !== 'production') require('../../secrets')
 
 mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN
+console.log(process.env)
 
 let time = parseInt((new Date().getTime() / 1000).toFixed(0))
 
