@@ -14,6 +14,9 @@ module.exports = {
     extensions: ['.js', '.jsx']
   },
   devtool: 'source-map',
+  devServer: {
+    contentBase: './dist'
+  },
   watchOptions: {
     ignored: /node_modules/
   },
