@@ -1,5 +1,6 @@
 const webpack = require('webpack')
 const isDev = process.env.NODE_ENV === 'development'
+if (!isDev) require('./secrets')
 
 module.exports = {
   mode: isDev ? 'development' : 'production',
