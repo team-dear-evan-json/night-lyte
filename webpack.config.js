@@ -1,4 +1,6 @@
+const webpack = require('webpack')
 const isDev = process.env.NODE_ENV === 'development'
+if (!isDev) require('./secrets')
 
 module.exports = {
   mode: isDev ? 'development' : 'production',
@@ -25,5 +27,13 @@ module.exports = {
         loader: 'babel-loader'
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        MAPBOX_ACCESS_TOKEN: JSON.stringify(process.env.MAPBOX_ACCESS_TOKEN),
+        YELP_AUTH: JSON.stringify(process.env.YELP_AUTH)
+      }
+    })
+  ]
 }
