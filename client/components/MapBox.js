@@ -1,5 +1,4 @@
 import React from 'react'
-// import mapboxgl from 'mapbox-gl'
 const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
 import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions'
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
@@ -11,7 +10,6 @@ import {connect} from 'react-redux'
 if (process.env.NODE_ENV !== 'production') require('../../secrets')
 
 mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN
-console.log(process.env)
 
 let time = parseInt((new Date().getTime() / 1000).toFixed(0))
 
